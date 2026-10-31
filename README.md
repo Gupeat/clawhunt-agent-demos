@@ -57,7 +57,6 @@ The run ends with 3 published posts, 1 permanent failure, 1 pending review and 1
 ## Repository layout
 
 ```text
-.github/workflows/ci.yml   # offline test matrix
 social-workflow/            # demo 1
 customs-agent/              # demo 2
 .gitignore
