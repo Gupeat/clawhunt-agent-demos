@@ -1,0 +1,12 @@
+shipment_id,order_id,sku,qty,unit,batch_no,warehouse,destination,declared_qty,declaration_mode,merge_group,partial_group,partial_seq,partial_total
+SHP-2001,ORD-1001,COMBO-A,10,set,B20261101-A,CN-SZ,US-LAX,,normal,,,,
+SHP-2002,ORD-1002,COMBO-B,8,set,B20261101-A,CN-SZ,US-LAX,,normal,,,,
+SHP-2003,ORD-1003,SKU-002,50,box,B20261101-B,CN-SZ,US-LAX,,normal,,,,
+SHP-2004,ORD-1004,SKU-001,100,pcs,B20261101-B,CN-SZ,US-LAX,,normal,,,,
+SHP-2005,ORD-1005,SKU-003,20,pcs,B20261101-C,CN-SZ,US-LAX,,normal,,,,
+SHP-2006,ORD-1006,COMBO-A,5,set,B20261101-C,CN-SZ,US-LAX,,normal,,,,
+SHP-2007,ORD-1001,COMBO-A,2,set,B20261101-D,CN-SZ,US-LAX,,merged,M-1,,,
+SHP-2008,ORD-1002,COMBO-B,3,set,B20261101-D,CN-SZ,US-LAX,,merged,M-1,,,
+SHP-2009,ORD-1003,SKU-002,10,box,B20261101-E,CN-SZ,US-LAX,,partial,,P-1,1,2
+SHP-2010,ORD-1003,SKU-002,10,box,B20261101-E,CN-SZ,US-LAX,,partial,,P-1,2,2
+SHP-2011,ORD-1004,SKU-001,5,pcs,B20261101-F,CN-SZ,,,normal,,,,

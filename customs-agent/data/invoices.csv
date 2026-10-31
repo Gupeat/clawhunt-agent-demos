@@ -1,0 +1,5 @@
+invoice_id,invoice_no,order_id,contract_id,buyer,company,tax_id,currency,total_amount,status
+INV-001,FP-001,ORD-1001,CT-1001,US Buyer,US Buyer LLC,US-TAX-1,USD,250.00,issued
+INV-002,FP-002,ORD-1003,CT-1003,US Buyer,US Buyer LLC,US-TAX-1,USD,600.00,issued
+INV-003,FP-003,ORD-1005,CT-1005,US Buyer,US Buyer LLC,US-TAX-WRONG,USD,196.00,issued
+INV-004,FP-004,ORD-1004,CT-1004,US Buyer,US Buyer LLC,US-TAX-1,USD,340.00,issued

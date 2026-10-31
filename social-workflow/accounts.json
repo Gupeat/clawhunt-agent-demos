@@ -1,0 +1,29 @@
+[
+  {
+    "account_id": "fb-alpha",
+    "name": "Alpha 家居",
+    "page_id": "mock-page-alpha",
+    "timezone": "Asia/Shanghai",
+    "daily_limit": 3,
+    "status": "mock",
+    "requires_review": true
+  },
+  {
+    "account_id": "fb-beta",
+    "name": "Beta 户外",
+    "page_id": "mock-page-beta",
+    "timezone": "Asia/Shanghai",
+    "daily_limit": 3,
+    "status": "mock",
+    "requires_review": true
+  },
+  {
+    "account_id": "fb-gamma",
+    "name": "Gamma 工具",
+    "page_id": "mock-page-gamma",
+    "timezone": "Asia/Shanghai",
+    "daily_limit": 3,
+    "status": "mock",
+    "requires_review": true
+  }
+]

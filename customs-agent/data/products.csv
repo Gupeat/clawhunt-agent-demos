@@ -1,0 +1,7 @@
+sku,name,hs_code,declared_name,unit,status,unit_price,currency
+SKU-001,棉质T恤,61091000,棉质针织T恤,pcs,active,8.50,USD
+SKU-002,帆布包,42029200,帆布手提包,pcs,active,12.00,USD
+SKU-003,不锈钢杯,73239300,不锈钢保温杯,pcs,active,9.80,USD
+SKU-004,硅胶折叠碗,,硅胶折叠碗,pcs,new,4.20,USD
+COMBO-A,户外套装,,,set,active,25.00,USD
+COMBO-B,工具套装,,,set,active,39.00,USD

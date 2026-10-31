@@ -1,0 +1,67 @@
+[
+  {
+    "asset_id": "asset-001",
+    "title": "仓库打包台",
+    "hook": "一张图看懂跨境仓的打包顺序",
+    "body": "从质检、贴标到装袋，3 个容易返工的细节。",
+    "tags": [
+      "warehouse",
+      "cross-border"
+    ],
+    "source": "synthetic"
+  },
+  {
+    "asset_id": "asset-006",
+    "title": "已删除素材占位",
+    "hook": "这条素材模拟平台已删除",
+    "body": "用于验证永久失败不会重试成重复发布。",
+    "tags": [
+      "failure-demo"
+    ],
+    "source": "synthetic"
+  },
+  {
+    "asset_id": "asset-002",
+    "title": "FBA 入仓清单",
+    "hook": "发货前 5 分钟检查清单",
+    "body": "箱唛、超重、混装、申报数量，逐项打勾再封箱。",
+    "tags": [
+      "fba",
+      "checklist"
+    ],
+    "source": "synthetic"
+  },
+  {
+    "asset_id": "asset-003",
+    "title": "户外折叠桌",
+    "hook": "露营桌的承重测试怎么做",
+    "body": "用三级加载记录形变，再决定包装和说明书。",
+    "tags": [
+      "outdoor",
+      "product"
+    ],
+    "source": "synthetic"
+  },
+  {
+    "asset_id": "asset-004",
+    "title": "工具套装",
+    "hook": "一套工具如何做套装拆分",
+    "body": "BOM、单位换算、批次一致性，报关回填一次讲清。",
+    "tags": [
+      "tools",
+      "customs"
+    ],
+    "source": "synthetic"
+  },
+  {
+    "asset_id": "asset-005",
+    "title": "客户问答",
+    "hook": "客户最常问的三个交期问题",
+    "body": "备货、截单、入仓预约，答案要写到小时。",
+    "tags": [
+      "service",
+      "faq"
+    ],
+    "source": "synthetic"
+  }
+]

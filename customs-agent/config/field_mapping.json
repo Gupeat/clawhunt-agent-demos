@@ -1,0 +1,32 @@
+{
+  "source": "ERP/DingTalk shipment export",
+  "target": "customs declaration backfill",
+  "required_shipment_fields": [
+    "shipment_id",
+    "order_id",
+    "sku",
+    "qty",
+    "unit",
+    "batch_no",
+    "warehouse",
+    "destination"
+  ],
+  "target_fields": [
+    "shipment_id",
+    "order_id",
+    "component_sku",
+    "declared_name",
+    "hs_code",
+    "declared_qty",
+    "unit",
+    "unit_price",
+    "currency",
+    "batch_no",
+    "warehouse",
+    "destination",
+    "declaration_mode",
+    "merge_group",
+    "partial_seq",
+    "partial_total"
+  ]
+}

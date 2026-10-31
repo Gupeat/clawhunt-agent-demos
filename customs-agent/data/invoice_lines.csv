@@ -1,0 +1,5 @@
+invoice_id,line_no,sku,qty,unit,unit_price,amount,description
+INV-001,1,COMBO-A,10,set,25.00,250.00,户外套装
+INV-002,1,SKU-002,50,box,12.00,600.00,帆布包
+INV-003,1,SKU-003,20,pcs,9.80,196.00,不锈钢杯
+INV-004,1,SKU-001,40,pcs,8.50,340.00,棉质T恤部分开票

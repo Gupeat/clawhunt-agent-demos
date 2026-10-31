@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Generated demo output and mutable local state
+social-workflow/out/
+social-workflow/state/
+customs-agent/out/
+
+# Local editor/OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
