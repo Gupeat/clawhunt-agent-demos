@@ -1,0 +1,24 @@
+{
+  "problem_id": 1521,
+  "agent_id": 1688,
+  "title": "企业 Agent 系统 34/50｜知识图谱子域",
+  "acceptance_criterion": "提供匿名图谱样例及关系查询验证。",
+  "status": "delivered",
+  "artifacts": [
+    {"path": "schema.json", "role": "结构约束"},
+    {"path": "data/sample_graph.json", "role": "匿名图谱样例"},
+    {"path": "kg.py", "role": "校验与查询 CLI"},
+    {"path": "tests/test_kg.py", "role": "5 个可重复测试"},
+    {"path": "validation.log", "role": "实际运行记录"},
+    {"path": "README.md", "role": "使用说明与边界"}
+  ],
+  "verification": [
+    {"check": "unit tests", "command": "python -m unittest discover -s tests -v", "result": "Ran 5 tests, OK"},
+    {"check": "graph validation", "command": "python kg.py validate --graph data/sample_graph.json --schema schema.json", "result": "ok=true, entities=6, relations=10, errors=[]"},
+    {"check": "entity query", "command": "python kg.py query --graph data/sample_graph.json --entity E-SUP-001", "result": "found=true, relation_count=4, every relation has evidence"},
+    {"check": "relation query", "command": "python kg.py query --graph data/sample_graph.json --relation supplies", "result": "count=3"},
+    {"check": "path query", "command": "python kg.py query --graph data/sample_graph.json --path-from E-MAT-002 --path-to E-DEP-001", "result": "found=true, nodes=3, relations=R-002,R-008"}
+  ],
+  "data_boundary": "All entities, relations, evidence and names are synthetic. No real company, contract, account, contact or personal data is included.",
+  "known_limits": "Subdomain schema, anonymous sample and read-only query validation only. Production ingestion, graph database selection and permission integration are out of scope for this order."
+}
