@@ -1,0 +1,127 @@
+{
+  "graph_id": "KG-SYNTH-1521",
+  "domain": "synthetic_procurement",
+  "note": "全部实体、关系和证据均为合成数据，不含真实企业、合同、账号或个人信息。",
+  "entities": [
+    {
+      "id": "E-SUP-001",
+      "type": "supplier",
+      "name": "星海精工（合成）",
+      "aliases": ["星海"],
+      "properties": {"region": "华东", "category": "结构件"},
+      "permission": {"visibility": "internal", "owner_department": "采购部（合成）"}
+    },
+    {
+      "id": "E-SUP-002",
+      "type": "supplier",
+      "name": "远山材料（合成）",
+      "aliases": ["远山"],
+      "properties": {"region": "华南", "category": "密封件"},
+      "permission": {"visibility": "internal", "owner_department": "采购部（合成）"}
+    },
+    {
+      "id": "E-MAT-001",
+      "type": "material",
+      "name": "铝合金外壳（合成）",
+      "aliases": ["外壳 A"],
+      "properties": {"spec": "6061-T6", "unit": "件"},
+      "permission": {"visibility": "internal", "owner_department": "采购部（合成）"}
+    },
+    {
+      "id": "E-MAT-002",
+      "type": "material",
+      "name": "密封圈（合成）",
+      "aliases": ["密封圈 B"],
+      "properties": {"spec": "NBR-70", "unit": "件"},
+      "permission": {"visibility": "internal", "owner_department": "采购部（合成）"}
+    },
+    {
+      "id": "E-CON-001",
+      "type": "contract",
+      "name": "年度采购合同（合成）",
+      "aliases": ["C-2026-001"],
+      "properties": {"effective_date": "2026-01-01", "status": "active"},
+      "permission": {"visibility": "restricted", "owner_department": "采购部（合成）"}
+    },
+    {
+      "id": "E-DEP-001",
+      "type": "department",
+      "name": "采购部（合成）",
+      "aliases": ["采购部"],
+      "properties": {"cost_center": "CC-1001"},
+      "permission": {"visibility": "internal", "owner_department": "采购部（合成）"}
+    }
+  ],
+  "relations": [
+    {
+      "id": "R-001",
+      "type": "supplies",
+      "from": "E-SUP-001",
+      "to": "E-MAT-001",
+      "evidence": [{"source_id": "SRC-001", "locator": "synthetic://erp/supplier-material#row=1", "quote": "供应商星海精工（合成）供应铝合金外壳（合成）。", "updated_at": "2026-10-01"}]
+    },
+    {
+      "id": "R-002",
+      "type": "supplies",
+      "from": "E-SUP-002",
+      "to": "E-MAT-002",
+      "evidence": [{"source_id": "SRC-002", "locator": "synthetic://erp/supplier-material#row=2", "quote": "供应商远山材料（合成）供应密封圈（合成）。", "updated_at": "2026-10-01"}]
+    },
+    {
+      "id": "R-003",
+      "type": "covers_supplier",
+      "from": "E-CON-001",
+      "to": "E-SUP-001",
+      "evidence": [{"source_id": "SRC-003", "locator": "synthetic://contracts/C-2026-001#L12", "quote": "合同 C-2026-001 覆盖供应商星海精工（合成）。", "updated_at": "2026-10-02"}]
+    },
+    {
+      "id": "R-004",
+      "type": "includes_material",
+      "from": "E-CON-001",
+      "to": "E-MAT-001",
+      "evidence": [{"source_id": "SRC-004", "locator": "synthetic://contracts/C-2026-001#L20", "quote": "合同 C-2026-001 包含物料铝合金外壳（合成）。", "updated_at": "2026-10-02"}]
+    },
+    {
+      "id": "R-005",
+      "type": "includes_material",
+      "from": "E-CON-001",
+      "to": "E-MAT-002",
+      "evidence": [{"source_id": "SRC-005", "locator": "synthetic://contracts/C-2026-001#L21", "quote": "合同 C-2026-001 包含物料密封圈（合成）。", "updated_at": "2026-10-02"}]
+    },
+    {
+      "id": "R-006",
+      "type": "owns_contract",
+      "from": "E-DEP-001",
+      "to": "E-CON-001",
+      "evidence": [{"source_id": "SRC-006", "locator": "synthetic://org/contract-owner#row=1", "quote": "采购部（合成）负责年度采购合同（合成）的签订与归档。", "updated_at": "2026-10-03"}]
+    },
+    {
+      "id": "R-007",
+      "type": "certifies",
+      "from": "E-DEP-001",
+      "to": "E-SUP-001",
+      "evidence": [{"source_id": "SRC-007", "locator": "synthetic://quality/supplier-cert#row=1", "quote": "采购部（合成）完成对星海精工（合成）的年度资质确认。", "updated_at": "2026-10-03"}]
+    },
+    {
+      "id": "R-008",
+      "type": "certifies",
+      "from": "E-DEP-001",
+      "to": "E-SUP-002",
+      "evidence": [{"source_id": "SRC-008", "locator": "synthetic://quality/supplier-cert#row=2", "quote": "采购部（合成）完成对远山材料（合成）的年度资质确认。", "updated_at": "2026-10-03"}]
+    },
+    {
+      "id": "R-009",
+      "type": "substitutes",
+      "from": "E-MAT-002",
+      "to": "E-MAT-001",
+      "evidence": [{"source_id": "SRC-009", "locator": "synthetic://engineering/alternates#row=3", "quote": "在密封圈（合成）缺料时，可用其替代铝合金外壳（合成）的包装内衬场景。", "updated_at": "2026-10-04"}]
+    },
+    {
+      "id": "R-010",
+      "type": "supplies",
+      "from": "E-SUP-001",
+      "to": "E-MAT-002",
+      "evidence": [{"source_id": "SRC-010", "locator": "synthetic://erp/supplier-material#row=10", "quote": "星海精工（合成）也可供应密封圈（合成）的小批量样品。", "updated_at": "2026-10-05"}]
+    }
+  ]
+}
