@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 购物助手 + B 端数据服务 · 可运行样例</title>
+<meta name="description" content="消费知识库驱动的 C 端购物助手与 B 端结构化 API：品牌质量/安全风险、营销合规、推荐溯源与置信度。纯静态、合成数据。">
+<link rel="stylesheet" href="../assets/demo.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ shopping demo</span></a>
+    <nav class="navlinks" aria-label="主导航">
+      <a href="../geo/">GEO 监测</a>
+      <a href="../voice/">Voice AI</a>
+      <a href="./" class="active">购物助手</a>
+      <a href="../industry/">产业 AI</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="eyebrow">AI Shopping Assistant / 1339 · C 端 + B 端</div>
+    <h1>先给依据，<br>再给推荐。</h1>
+    <p class="lede">把“值得买吗、安全吗、有没有夸大宣传”拆成可复核的三件事：知识库检索、风险规则判定、带来源的推荐。左侧是消费者看到的问答，右侧是同一套结果给 AI Search / 智能客服调用的结构化数据。</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#assistant">试用购物问答 →</a>
+      <a class="btn" href="#compliance">扫描营销文案</a>
+      <a class="btn ghost" href="#checks">运行自检</a>
+    </div>
+    <div class="grid four mt24">
+      <div class="kpi"><div class="k">合成知识库</div><div class="v" id="kb-count">4</div><div class="d">品牌/品类/场景 fixtures</div></div>
+      <div class="kpi"><div class="k">响应链路</div><div class="v">5</div><div class="d">检索 → 规则 → 排序 → 生成 → 溯源</div></div>
+      <div class="kpi"><div class="k">真实数据</div><div class="v">0</div><div class="d">不接客户知识库、不存用户信息</div></div>
+      <div class="kpi"><div class="k">自检断言</div><div class="v" id="check-count">7</div><div class="d">可重跑、结果可复现</div></div>
+    </div>
+    <div class="note mt16"><b>边界：</b>本页是技术方案的最小可运行样例，不是医疗/安全建议。所有品牌、商品、成分和“检测数据”均为合成或脱敏演示；真实落地时需要接入客户知识库、官方备案/检测来源，并对高风险品类保留人工复核。</div>
+  </section>
+
+  <section id="assistant" class="wrap" style="padding: 8px 0 24px">
+    <div class="grid two" style="align-items: start">
+      <div class="card">
+        <div class="panel-title">
+          <div>
+            <div class="eyebrow">C-end</div>
+            <h2>购物助手</h2>
+            <p>问一个真实消费问题，看看答案如何被拆成依据、推荐和风险提示。</p>
+          </div>
+          <span class="badge info">DEMO</span>
+        </div>
+        <div id="chatlog" class="chatlog" aria-live="polite"></div>
+        <div id="query-chips" class="row mt12" aria-label="示例问题"></div>
+        <form id="query-form" class="row mt12">
+          <label class="sr-only" for="query-input">输入消费问题</label>
+          <input id="query-input" type="text" autocomplete="off" placeholder="例如：油皮夏天通勤，防晒怎么选？" style="flex:1; min-width: 180px">
+          <button class="btn primary" type="submit">提问</button>
+        </form>
+        <p class="tiny mt8">提示：点击下方示例问题最快；回答来自本地合成知识库，不访问网络。</p>
+        <div class="note mt12"><b>回答原则：</b>先给结论，再给“适合谁/注意什么”，最后列出来源和更新时间；高风险品类不生成诊断，不做“根治/替代药物”承诺。</div>
+      </div>
+
+      <div class="card">
+        <div class="panel-title">
+          <div>
+            <div class="eyebrow">B-end</div>
+            <h2>结构化响应</h2>
+            <p>同一套结果，供 AI Search / 客服 / 导购 API 直接消费。</p>
+          </div>
+          <span class="badge good">JSON</span>
+        </div>
+        <div id="api-meta" class="row between mb12"></div>
+        <pre class="code" id="api-json" aria-label="B 端 JSON 响应"></pre>
+        <div class="row between mt12">
+          <span class="tiny">字段契约：trace_id / recommendation / risk_flags / citations / confidence</span>
+          <button class="btn small" id="copy-json" type="button">复制 JSON</button>
+        </div>
+        <div class="note mt12"><b>B 端用途：</b>内容平台做答案卡、客服系统做推荐依据、品牌方做“被引用/被推荐”监测。所有推荐必须能回到 citation；没有来源的结论不进入 API。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 8px 0 24px">
+    <div class="panel-title">
+      <div><div class="eyebrow">Recommendation evidence</div><h2 id="recommendation-title">推荐结论</h2><p id="recommendation-sub">每条推荐都带质量、安全、合规和置信度，而不是只给一个商品链接。</p></div>
+    </div>
+    <div id="recommendations" class="grid three"></div>
+  </section>
+
+  <section id="compliance" class="wrap grid two" style="padding: 8px 0 24px; align-items: start">
+    <div class="card">
+      <div class="panel-title">
+        <div><div class="eyebrow">Compliance scanner</div><h2>营销文案合规扫描</h2><p>绝对化、医疗断言、虚构证据、时限承诺四类规则；给修改建议，不替代法务审核。</p></div>
+        <span class="badge warn">RULES</span>
+      </div>
+      <label class="field"><span>待扫描文案（可编辑）</span><textarea id="copy-input" rows="5">全网第一的敏感肌修护精华，7 天根治泛红，临床验证 99% 有效，权威认证，永久不反复。原价 999，仅限今天。</textarea></label>
+      <div class="row">
+        <button class="btn primary" id="scan-copy" type="button">扫描文案</button>
+        <button class="btn" id="reset-copy" type="button">恢复示例</button>
+        <span id="scan-score" class="badge">未扫描</span>
+      </div>
+      <div id="scan-result" class="stack mt12" aria-live="polite"></div>
+      <div class="note warn mt12"><b>合规基线：</b>《广告法》禁止绝对化用语；化妆品不得宣称医疗作用；食品/保健食品不得替代药物。示例只演示规则引擎的输出格式。</div>
+    </div>
+
+    <div class="card" id="kb">
+      <div class="panel-title">
+        <div><div class="eyebrow">Knowledge base</div><h2>知识库样本</h2><p>真实落地时由客户知识与官方来源替换；每条都带来源、更新时间和置信度。</p></div>
+        <span class="badge">SYNTHETIC</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>商品</th><th>质量</th><th>安全风险</th><th>合规</th><th>置信度</th></tr></thead>
+          <tbody id="kb-body"></tbody>
+        </table>
+      </div>
+      <div class="note mt12"><b>数据治理：</b>知识库按“来源 → 抽取 → 冲突合并 → 过期标记 → 人工抽检”流水线更新；同一商品出现冲突时保留双方来源并降置信度，不悄悄覆盖。</div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 8px 0 30px">
+    <div class="grid two" style="align-items: start">
+      <div class="card" id="checks">
+        <div class="panel-title">
+          <div><div class="eyebrow">Runnable checks</div><h2>知识库与契约自检</h2><p>不是文案：点击按钮，逐项验证唯一 ID、溯源、风险规则、确定性、API 字段和免责声明。</p></div>
+          <span class="badge" data-check-summary>未运行</span>
+        </div>
+        <div id="check-list" class="checklist"></div>
+        <div class="row mt12"><button class="btn primary" id="run-checks" type="button">运行自检</button><span class="tiny">所有断言在浏览器内执行，无外部依赖。</span></div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Delivery notes</div>
+        <h2 class="mt8">这套样例对应什么交付</h2>
+        <ul class="clean mt12">
+          <li><b>C 端 MVP：</b>AI Search 卡片 / 聊天助手 / 导购 Bot，按品类配置回答口吻与风险阈值。</li>
+          <li><b>B 端 MVP：</b>结构化推荐 API、品牌可见度/引用监测、知识库质量报表。</li>
+          <li><b>模型层：</b>RAG 检索 + 规则引擎 + 可替换 LLM；高风险结论必须保留 citation 与人工复核入口。</li>
+          <li><b>验收口径：</b>推荐可追溯率 100%、高风险宣称漏检率 0、同一输入结果稳定、无来源结论不展示。</li>
+        </ul>
+        <div class="demo-note mt16"><b>合成声明：</b>所有品牌名、商品、指标和“检测”描述均为本 demo 虚构；示例文案中的产品不存在，扫描结果只用于展示规则格式。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <div class="row between">
+    <span>ClawHunt FDE Demo Studio · Shopping / 1339 · 合成数据 · 纯静态</span>
+    <span><a href="../">返回 hub</a> · <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">GitHub 源码</a></span>
+  </div>
+</footer>
+
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

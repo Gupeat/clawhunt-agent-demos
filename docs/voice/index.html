@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>东南亚招聘 Voice AI Agent · 可点通演示</title>
+<meta name="description" content="基于 Retell 的招聘 Voice AI 浏览器模拟通话：多语言对话、打断/静默、API 失败降级、转人工与 12 项 QA 证据。">
+<link rel="stylesheet" href="../assets/demo.css">
+<style>
+.voice-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:16px; align-items:start; }
+.call-shell { background:#0e1f2b; color:#e9f5f7; border-color:#123b45; }
+.call-shell h3, .call-shell .sub { color:#e9f5f7; }
+.call-shell .sub { color:#a9c8cd; }
+.call-top { display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid #24434d; padding-bottom:12px; }
+.call-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+.call-meta .kpi { background:#14313b; border-color:#24434d; }
+.call-meta .kpi .k { color:#9fc3c8; }
+.call-meta .kpi .v { color:#f2fbfc; font-size:18px; }
+.phone { border:1px solid #2b4d57; border-radius:18px; padding:10px; background:#0a1820; }
+.phone-head { display:flex; align-items:center; gap:9px; padding:5px 4px 9px; }
+.avatar { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,#1f8d84,#2fb7a9); color:#fff; font-weight:800; }
+.call-status { font-size:11.5px; color:#9fc3c8; }
+.call-status b { color:#8fe0d6; }
+.transcript { display:grid; gap:8px; min-height:250px; max-height:390px; overflow:auto; padding:8px 2px; }
+.bubble { max-width:90%; padding:9px 11px; border-radius:10px; font-size:13px; line-height:1.55; }
+.bubble.agent { background:#dff5f2; color:#0c2a2c; border-bottom-left-radius:3px; }
+.bubble.candidate { background:#fff; color:#1b2d3b; margin-left:auto; border-bottom-right-radius:3px; }
+.bubble.system { background:#3b2a13; color:#ffdca8; border:1px solid #6c4b22; max-width:100%; font-family:Consolas,monospace; font-size:11.5px; }
+.bubble .who { display:block; font-size:10.5px; font-weight:800; opacity:.66; margin-bottom:2px; }
+.choices { display:grid; gap:7px; margin-top:10px; }
+.choice { text-align:left; justify-content:flex-start; background:#163741; color:#e9f5f7; border-color:#2b5660; }
+.choice:hover { background:#1b4550; }
+.call-actions { display:flex; gap:7px; flex-wrap:wrap; margin-top:10px; }
+.call-actions .btn { background:#163741; color:#e9f5f7; border-color:#2b5660; }
+.call-actions .btn.primary { background:#1f9d8f; border-color:#1f9d8f; }
+.call-actions .btn:hover { border-color:#4a8c96; }
+.failure-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; border-top:1px solid #24434d; padding-top:10px; }
+.failure-row .btn { background:transparent; color:#ffdca8; border-color:#6c4b22; }
+.scorecard { display:grid; gap:8px; }
+.score-line { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line-soft); padding:7px 0; font-size:12.5px; }
+.score-line b { text-align:right; }
+.qa-table td, .qa-table th { white-space:normal; }
+@media (max-width:900px){ .voice-layout{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ Voice AI</span></a>
+    <nav class="navlinks" aria-label="演示导航">
+      <a href="../geo/">GEO 监测</a>
+      <a class="active" href="./">Voice AI</a>
+      <a href="../shopping/">购物助手</a>
+      <a href="../industry/">产业 AI</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/docs/voice" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Retell-style recruiting voice agent · QA-first</div>
+    <h1>招聘电话不是“能聊”就行，<br>要能被 QA、能降级、能上线。</h1>
+    <p class="lede">一个浏览器内的招聘 Voice Agent 模拟：候选人用按钮回答，Agent 按状态机推进；你可以注入静默、打断、ATS API 失败，观察降级与通话后 scorecard。不是预录视频，也没有真实电话号码。</p>
+    <div class="row mt16"><span class="badge warn">合成候选人 · 非真实通话</span><span class="badge info">浏览器内状态机</span><span class="badge good">12 项 QA 套件</span></div>
+  </section>
+
+  <section class="voice-layout">
+    <div class="stack">
+      <section class="card call-shell">
+        <div class="call-top">
+          <div><h3>模拟通话</h3><p class="sub" id="scenario-sub">选择场景后开始；Agent 语音可按浏览器能力朗读。</p></div>
+          <span class="badge" id="call-status" style="background:#163741;border-color:#2b5660;color:#9fc3c8">未开始</span>
+        </div>
+        <div class="row mt12">
+          <label class="field" style="flex:1;margin:0"><span>招聘场景</span><select id="scenario"></select></label>
+          <label class="field" style="flex:0 0 auto;margin:0;color:#cfe6e8"><span>Agent 朗读</span><input type="checkbox" id="speak-toggle" style="width:auto;accent-color:#2fb7a9"></label>
+        </div>
+        <div class="call-meta">
+          <div class="kpi"><div class="k">通话时长</div><div class="v" id="call-timer">00:00</div></div>
+          <div class="kpi"><div class="k">最近延迟</div><div class="v" id="call-latency">—</div></div>
+          <div class="kpi"><div class="k">估算成本</div><div class="v" id="call-cost">$0.00</div></div>
+        </div>
+        <div class="phone mt12">
+          <div class="phone-head"><div class="avatar">N</div><div><b id="agent-name">Nadia</b><div class="call-status" id="agent-role">Recruiting coordinator · synthetic</div></div></div>
+          <div class="transcript" id="transcript" aria-live="polite"></div>
+          <div class="choices" id="choices"></div>
+        </div>
+        <div class="call-actions">
+          <button class="btn primary" id="start-call">开始模拟通话</button>
+          <button class="btn" id="end-call" disabled>结束并生成 scorecard</button>
+          <button class="btn" id="reset-call">重置</button>
+        </div>
+        <div class="failure-row">
+          <button class="btn small" id="inject-silence">注入 8s 静默</button>
+          <button class="btn small" id="inject-interrupt">注入候选人打断</button>
+          <button class="btn small" id="inject-api">注入 ATS API 失败</button>
+        </div>
+        <p class="tiny mt12" style="color:#8fb3b8">所有对话、候选人、薪资与客户名称均为合成数据。真实上线时，Retell 负责电话链路，后端 webhook 负责业务系统写入；本页只演示状态机与失败路径。</p>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>通话后 scorecard</h3><p>每次通话结束自动生成；字段与 ATS 写入契约一致。</p></div><span class="badge" id="scorecard-status">未生成</span></div>
+        <div id="scorecard" class="scorecard"><p class="muted fs13">开始并完成一通模拟通话后生成；也可提前结束，查看未完成通话的 disposition。</p></div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="card">
+        <div class="panel-title"><div><h3>上线架构</h3><p>电话链路与业务系统解耦，失败可降级。</p></div></div>
+        <div class="diagram">
+          <div class="node"><b>候选人电话</b>PSTN / SIP</div>
+          <div class="node"><b>Retell Agent</b>ASR · LLM · TTS<br>打断/静默</div>
+          <div class="node"><b>Webhook</b>FastAPI<br>幂等 · 重试</div>
+          <div class="node"><b>业务系统</b>ATS · 日历<br>短信 · 工单</div>
+          <div class="node"><b>证据链</b>录音 · 转写<br>QA · 回放</div>
+        </div>
+        <div class="note mt12">关键边界：Retell 不直接写 ATS。Webhook 用 <span class="mono">call_id</span> 做幂等键，失败重试 3 次后进入人工队列；通话结束事件与转写分别落库，避免“电话成功、系统没写”的静默失败。</div>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>Retell 配置样例</h3><p>生产参数示意，不含密钥/真实 ID。</p></div></div>
+        <pre class="code" id="config-json"></pre>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>QA 套件</h3><p>12 个用例，重点是 happy path 之外。</p></div><button class="btn small" id="run-qa">运行 QA</button><span class="badge good" id="qa-summary">—</span></div>
+        <div class="table-wrap">
+          <table class="qa-table"><thead><tr><th>类别</th><th>用例</th><th>断言</th><th>结果</th></tr></thead><tbody id="qa-body"></tbody></table>
+        </div>
+        <p class="tiny mt12">本页 QA 为静态状态机断言 + 演示状态；生产验收需在 Retell 沙箱用真实录音、真实号码与真实 ATS 回放，并保留失败样本。这里不把“自测通过”冒充生产验收。</p>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>失败矩阵</h3><p>每一种失败都要有可观察的结果。</p></div></div>
+        <div class="table-wrap"><table><thead><tr><th>失败</th><th>检测</th><th>降级</th></tr></thead><tbody>
+          <tr><td>候选人静默</td><td>2 次重问后仍无语音</td><td>礼貌结束 + 短信预约链接</td></tr>
+          <tr><td>HTTP API 5xx</td><td>超时 2.5s / 非 2xx</td><td>重试 3 次 → 工单 + 人工回拨</td></tr>
+          <tr><td>口音/语言不匹配</td><td>置信度 &lt; 阈值</td><td>切换语言或转人工，不硬猜</td></tr>
+          <tr><td>重复回调</td><td>同一 call_id 重复事件</td><td>幂等写，不重复建候选人</td></tr>
+        </tbody></table></div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap"><div class="row between"><span>Voice AI demo · synthetic candidates · static build</span><a href="../">← 返回演示索引</a></div></footer>
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

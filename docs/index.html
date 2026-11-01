@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClawHunt FDE Demo Studio · 可运行交付样例</title>
+<meta name="description" content="四个可点通的交付样例：GEO 可见度监测、东南亚招聘 Voice AI、AI 购物助手、区域产业 AI 平台。纯静态、零后端、无密钥，托管在 GitHub Pages。">
+<link rel="stylesheet" href="./assets/demo.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="./"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ demo studio</span></a>
+    <nav class="navlinks" aria-label="主导航">
+      <a href="./geo/">GEO 监测</a>
+      <a href="./voice/">Voice AI</a>
+      <a href="./shopping/">购物助手</a>
+      <a href="./industry/">产业 AI</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="eyebrow">Always-on static demos · synthetic data only</div>
+    <h1>把方案变成<br>甲方现在就能点开的演示。</h1>
+    <p class="lede">四个独立的交付样例，对应四类真实项目需求。全部是纯前端静态页面：不依赖本机、不需要后端、不保存密钥，托管在 GitHub Pages，电脑关机后链接照常打开。</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#demos">打开四个演示 ↓</a>
+      <a class="btn" href="#always-on">为什么关机也能跑</a>
+      <a class="btn ghost" href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">查看源码 ↗</a>
+    </div>
+    <div class="grid four mt24">
+      <div class="kpi"><div class="k">交付样例</div><div class="v">4</div><div class="d">各自独立入口、可复跑自检</div></div>
+      <div class="kpi"><div class="k">后端依赖</div><div class="v">0</div><div class="d">浏览器内完成全部交互</div></div>
+      <div class="kpi"><div class="k">API 密钥</div><div class="v">0</div><div class="d">无真实账号、无真实客户数据</div></div>
+      <div class="kpi"><div class="k">托管方式</div><div class="v">静态</div><div class="d">GitHub Pages · 7×24 可访问</div></div>
+    </div>
+    <div class="note mt16"><b>先说清楚：</b>这些是方案与工程能力的“可点通样例”，不是已经接入了甲方真实账号/真实模型 API 的生产系统。页面内所有品牌、商品、候选人、监测结果、工艺参数均为合成或脱敏演示数据；真实落地时按接口契约替换数据源，验收口径见各页“自检”区。</div>
+  </section>
+
+  <section id="demos" class="wrap" style="padding: 10px 0 30px">
+    <div class="panel-title">
+      <div><div class="eyebrow">Four demos</div><h2>四个可点通的样例</h2><p>每个入口都有独立的交互、证据留存和自检，不是一张截图。</p></div>
+    </div>
+    <div class="grid two">
+      <article class="card">
+        <div class="row between"><span class="badge info">GEO / 1365</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">GEO 智能可见度监测</h3>
+        <p class="sub">六平台盲测采集 → 品牌提及/位次/情感/引用抽取 → 原始证据留存 → 知识库内容工厂 → 归因看板。含“同一 Prompt 重复采集方差”与结构化抽取自检。</p>
+        <ul class="clean fs13 mt12">
+          <li>品牌 × Prompt × 平台实时组合，结果可复现</li>
+          <li>每条结果带原句、模型版本、时间戳、账号指纹哈希</li>
+          <li>内置 8 项抽取/证据/API 契约自检</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./geo/">打开 GEO 演示 →</a><span class="tiny">监测引擎最小演示</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">Voice / 1639</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">东南亚招聘 Voice AI Agent</h3>
+        <p class="sub">按 Retell 的工程约束做一个浏览器内模拟通话：多语言、打断/静默、API 失败降级、超时转人工、通话后 scorecard 与 QA 证据。</p>
+        <ul class="clean fs13 mt12">
+          <li>候选人问答状态机，不是预录视频</li>
+          <li>延迟/成本/转人工指标实时可见</li>
+          <li>12 项 QA 套件，覆盖 happy path 之外的失败路径</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./voice/">打开 Voice 演示 →</a><span class="tiny">QA-first 样例</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">Shopping / 1339</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">AI 购物助手 + B 端数据服务</h3>
+        <p class="sub">消费知识库驱动的 C 端问答：品牌质量/安全风险、营销合规、性价比推荐、答案溯源；右侧同步展示供 AI Search / 智能客服调用的结构化 B 端响应。</p>
+        <ul class="clean fs13 mt12">
+          <li>每条推荐都带来源、更新时间和置信度</li>
+          <li>营销文案合规扫描：绝对化用语/医疗断言/虚构数据</li>
+          <li>内置 7 项知识库与响应契约自检</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./shopping/">打开购物演示 →</a><span class="tiny">C 端 + B 端一体</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">Industry / 1724</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">区域特色产业 AI 赋能一期</h3>
+        <p class="sub">四块拼成一个可点通的产业平台：工艺 AI 共创、可制造性规则评估、C2M 预售/派单/结算链路、企业智能体服务层、文化 IP 双角色管线。</p>
+        <ul class="clean fs13 mt12">
+          <li>工艺规则用配置表达，非程序员可改参数</li>
+          <li>可制造性初判：能不能做、哪里做不了、改哪里</li>
+          <li>授权字段强制校验 + 分成结算可复算</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./industry/">打开产业 AI 演示 →</a><span class="tiny">四模块串联</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="always-on" class="wrap" style="padding: 10px 0 26px">
+    <div class="card" style="background: linear-gradient(135deg, #0d2632, #123e46); color: #eaf7f7; border-color: #123e46">
+      <div class="grid two" style="align-items: center">
+        <div>
+          <div class="eyebrow" style="color:#8fe0d6">Always-on, by design</div>
+          <h2 style="margin-top:10px">关机也能打开，因为页面根本不在你的电脑上跑。</h2>
+          <p style="color:#b9d6d8; margin-top:12px">所有演示都是静态 HTML/CSS/JS，部署在 GitHub Pages 的 CDN 上。没有本地服务、没有数据库、没有定时任务；你合上电脑，链接仍然可以在手机或另一台电脑打开。演示中的“运行”只是浏览器内确定性计算，不会访问真实客户系统。</p>
+        </div>
+        <div class="stack">
+          <div class="checkrow pass"><span class="dot">✓</span><span>静态托管：GitHub Pages CDN</span><span class="detail">无需本机进程</span></div>
+          <div class="checkrow pass"><span class="dot">✓</span><span>无密钥：不读取任何 API key</span><span class="detail">可公开分享</span></div>
+          <div class="checkrow pass"><span class="dot">✓</span><span>确定性数据：同输入同输出</span><span class="detail">方便复核</span></div>
+          <div class="checkrow pass"><span class="dot">✓</span><span>移动端可用：响应式布局</span><span class="detail">手机可验收</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 10px 0 30px">
+    <div class="grid three">
+      <div class="card tight"><h3>验收看什么</h3><p class="sub">先打开任一 demo，点“运行自检”。自检项是断言，不是文案：抽取字段、证据完整性、规则判定、结算总和、API 契约都会被逐项检查。</p></div>
+      <div class="card tight"><h3>源码在哪</h3><p class="sub">完整源码树在 <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">Gupeat/clawhunt-agent-demos</a>；本页与四个 demo 都放在 <span class="mono">docs/</span>，可一键 fork 或私有化部署。</p></div>
+      <div class="card tight"><h3>已有 Python 交付样例</h3><p class="sub">另有两个可离线复跑的 Python 样例：<a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/customs-agent" target="_blank" rel="noopener">报关表回填</a>（10 项测试）与 <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/social-workflow" target="_blank" rel="noopener">社媒获客工作流</a>（6 项测试）。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <div class="row between">
+    <span>ClawHunt FDE Demo Studio · 合成/脱敏数据 · 纯静态演示</span>
+    <span><a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">GitHub 源码</a> · <a href="./README.md">部署说明</a></span>
+  </div>
+</footer>
+</body>
+</html>

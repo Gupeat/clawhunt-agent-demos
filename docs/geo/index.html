@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEO 智能可见度监测 · 可点通演示</title>
+<meta name="description" content="六平台 AI 搜索品牌可见度盲测、证据留存、内容工厂与归因看板的最小可运行前端演示。">
+<link rel="stylesheet" href="../assets/demo.css">
+<style>
+.geo-layout { display:grid; grid-template-columns: 330px minmax(0,1fr); gap:16px; align-items:start; }
+.geo-control { position:sticky; top:78px; }
+.platform-list { display:grid; gap:7px; }
+.platform-list label { display:flex; align-items:center; gap:8px; border:1px solid var(--line-soft); border-radius:8px; padding:7px 9px; font-size:12.5px; background:#fbfdff; cursor:pointer; }
+.platform-list input { accent-color:var(--accent); }
+.quote-cell { max-width:330px; }
+.evidence-box { display:grid; gap:10px; }
+.evidence-quote { border-left:3px solid var(--accent); padding:8px 12px; background:#f5fbfb; border-radius:0 8px 8px 0; color:#34575e; font-size:12.8px; }
+@media (max-width:900px){ .geo-layout{grid-template-columns:1fr;} .geo-control{position:static;} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ GEO</span></a>
+    <nav class="navlinks" aria-label="演示导航">
+      <a class="active" href="./">GEO 监测</a>
+      <a href="../voice/">Voice AI</a>
+      <a href="../shopping/">购物助手</a>
+      <a href="../industry/">产业 AI</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/docs/geo" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">GEO visibility engine · minimum demo</div>
+    <h1>品牌在 AI 答案里<br>到底有没有被看见？</h1>
+    <p class="lede">选择一个品牌和 Prompt，在六个目标平台的模拟盲测中运行。每次结果都保留原句、模型版本、时间戳和账号指纹哈希；再用同一口径重复 5 次，检查方差。全部计算在浏览器内完成。</p>
+    <div class="row mt16"><span class="badge warn">合成数据 · 非实时平台输出</span><span class="badge info">纯静态 · 无 API 密钥</span><span class="badge good" id="run-state">就绪</span></div>
+  </section>
+
+  <section class="geo-layout">
+    <aside class="card geo-control">
+      <div class="panel-title"><div><h3>监测控制台</h3><p>品牌 × Prompt × 平台</p></div></div>
+      <label class="field"><span>品牌</span><select id="brand"></select></label>
+      <label class="field"><span>Prompt</span><select id="prompt"></select></label>
+      <div class="field"><span class="muted fs13" style="display:block;font-weight:700;font-size:12px;margin-bottom:5px">目标平台</span>
+        <div class="platform-list" id="platforms"></div>
+      </div>
+      <div class="stack mt12">
+        <button class="btn primary" id="run-audit">运行一次盲测</button>
+        <button class="btn" id="run-variance">重复 5 次 · 方差测试</button>
+      </div>
+      <div class="divider"></div>
+      <label class="field"><span>新增 Prompt（写入本次会话）</span><input id="new-prompt" type="text" maxlength="120" placeholder="例如：跨境企业如何选 AI 客服？"></label>
+      <button class="btn small" id="add-prompt">加入 Prompt 库</button>
+      <p class="tiny mt12">演示口径：提及率 = 命中品牌别名 / 总采集；位次 = 品牌首次出现位置；情感 = 确定性规则 + 二次判定；方差用总体方差（pp）。</p>
+    </aside>
+
+    <div class="stack">
+      <section class="card">
+        <div class="panel-title">
+          <div><h3>盲测结果</h3><p id="result-sub">选择品牌与 Prompt 后运行；表中每条都带证据索引。</p></div>
+          <span class="badge" id="result-count">0 条</span>
+        </div>
+        <div class="kpis mb16">
+          <div class="kpi"><div class="k">提及率</div><div class="v" id="kpi-mention">—</div><div class="d">品牌被提及 / 采集数</div></div>
+          <div class="kpi"><div class="k">平均位次</div><div class="v" id="kpi-position">—</div><div class="d">越小越靠前</div></div>
+          <div class="kpi"><div class="k">正向情感</div><div class="v" id="kpi-sentiment">—</div><div class="d">提及样本中的正向占比</div></div>
+          <div class="kpi"><div class="k">引用率</div><div class="v" id="kpi-citation">—</div><div class="d">带可核验来源链接</div></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>平台 / 模型</th><th>提及</th><th>位次</th><th>情感</th><th>引用</th><th>原句证据</th><th></th></tr></thead>
+            <tbody id="result-body"><tr><td colspan="7" class="muted">尚未运行。点击左侧“运行一次盲测”。</td></tr></tbody>
+          </table>
+        </div>
+        <div class="grid two mt16">
+          <div class="card tight" style="box-shadow:none">
+            <div class="row between"><h3>证据视图</h3><span class="badge info" id="evidence-label">未选择</span></div>
+            <div id="evidence-card" class="evidence-box mt12"><p class="muted fs13">点击结果表中的“证据”查看原句、截图哈希与复现信息。</p></div>
+          </div>
+          <div class="card tight" style="box-shadow:none">
+            <div class="row between"><h3>5 次重复方差</h3><span class="badge" id="variance-badge">未运行</span></div>
+            <div id="variance-card" class="mt12"><p class="muted fs13">同一 Prompt 重复采集 5 次，计算提及率方差（pp）。目标：≤ 5pp。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>内容工厂</h3><p>只基于已留存证据生成结构化内容；不编造来源。</p></div><button class="btn small" id="generate-content">生成结构化内容</button></div>
+        <div class="grid two">
+          <div id="content-preview"><p class="muted fs13">运行盲测后点击生成；会产出结论前置摘要、FAQ 和 JSON-LD。</p></div>
+          <pre class="code" id="content-json">// JSON-LD / 来源对象会显示在这里</pre>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>归因与开放 API</h3><p>从监测结果到内容动作，再到可核验的 API 响应。</p></div><span class="badge info">/api/v1/monitor/results</span></div>
+        <div class="grid two">
+          <div>
+            <div class="bars" id="attribution-bars"></div>
+            <p class="tiny mt12">归因是演示口径：内容资产数 × 引用率增量，不代表因果证明。生产环境需要对照组、时间窗和信源投放记录。</p>
+          </div>
+          <pre class="code" id="api-json">// 运行后生成 API 响应样例</pre>
+        </div>
+      </section>
+
+      <section class="card" id="qa">
+        <div class="panel-title"><div><h3>运行自检</h3><p>8 项断言，检查抽取、证据、方差口径与 API 契约；失败会直接标红。</p></div><button class="btn small" id="run-checks">重新运行</button><span class="badge good" data-check-summary>—</span></div>
+        <div class="checklist" id="checklist"></div>
+        <div class="note mt12">本页所有数字与品牌均为合成样例；真实平台采集需遵守各平台条款、配额与隐私要求。演示只证明“数据契约 + 证据链 + 可复现口径”可以跑通。</div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap"><div class="row between"><span>GEO demo · synthetic evidence only · static build</span><a href="../">← 返回演示索引</a></div></footer>
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

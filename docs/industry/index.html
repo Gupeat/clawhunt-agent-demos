@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>区域特色产业 AI 赋能一期 · 可运行样例</title>
+<meta name="description" content="工艺 AI 共创、可制造性规则评估、C2M 柔性定制链路、企业智能体服务层与文化 IP 双角色管线。纯静态合成样例。">
+<link rel="stylesheet" href="../assets/demo.css">
+<style>
+  .concept-frame { border: 1px solid var(--line); border-radius: 12px; background: #f7fbfc; padding: 12px; }
+  .concept-frame svg { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .concept-caption { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; color: var(--faint); font-size: 11.5px; }
+  .character { border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(160deg, #f2fbfa, #fff); padding: 12px; }
+  .character .face { height: 120px; border-radius: 9px; background: radial-gradient(circle at 50% 32%, #c9ebe5 0 26%, transparent 27%), radial-gradient(circle at 50% 78%, #d9f1ec 0 38%, transparent 39%), #eef9f7; position: relative; overflow: hidden; }
+  .character .face::before, .character .face::after { content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #0c6c6d; top: 43%; }
+  .character .face::before { left: 35%; } .character .face::after { right: 35%; }
+  .ledger { display: grid; gap: 7px; }
+  .ledger-row { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dashed var(--line); padding: 6px 0; font-size: 12.5px; }
+  .ledger-row b { text-align: right; }
+  .mini-label { color: var(--muted); font-size: 11.5px; font-weight: 700; }
+  @media (max-width: 620px) { .concept-caption { display: block; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ industry demo</span></a>
+    <nav class="navlinks" aria-label="主导航">
+      <a href="../geo/">GEO 监测</a>
+      <a href="../voice/">Voice AI</a>
+      <a href="../shopping/">购物助手</a>
+      <a href="./" class="active">产业 AI</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="eyebrow">Regional industry AI / 1724 · phase 1</div>
+    <h1>从一张概念图，<br>到一张可执行工单。</h1>
+    <p class="lede">把“AI 共创、可制造性、柔性定制、文化 IP”放进一条能点通的链路：概念不是终点，授权字段、工艺规则、订单阶段和分成账本都能被复核。四块能力共用一套配置和证据口径。</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#workspace">打开四模块工作台 →</a>
+      <a class="btn" href="#checks">运行自检</a>
+      <a class="btn ghost" href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">源码 ↗</a>
+    </div>
+    <div class="grid four mt24">
+      <div class="kpi"><div class="k">一期模块</div><div class="v">4</div><div class="d">A 共创 / B 服务层 / C IP / D 可选赛事</div></div>
+      <div class="kpi"><div class="k">工艺路线</div><div class="v">2</div><div class="d">珠宝镶嵌 + 红木榫卯</div></div>
+      <div class="kpi"><div class="k">行业配置</div><div class="v">6</div><div class="d">一套服务层，多行业复用</div></div>
+      <div class="kpi"><div class="k">自检断言</div><div class="v" id="check-count">8</div><div class="d">授权、规则、链路、账本</div></div>
+    </div>
+    <div class="note mt16"><b>边界：</b>本页是纯前端、合成数据的方案样例。工艺参数是演示值，不构成生产图纸；不接真实工厂、不发起真实交易；文化 IP 角色为原创演示形象，不主张任何传统/宗教排他权。真实落地时由工艺师、法务和工厂共同验收。</div>
+  </section>
+
+  <section id="workspace" class="wrap" style="padding: 8px 0 24px">
+    <div class="card" style="padding: 0; overflow: hidden">
+      <div class="tabs" role="tablist" aria-label="四模块工作台">
+        <button class="tab active" id="tab-creative" data-pane="pane-creative" role="tab" aria-selected="true">01 工艺共创</button>
+        <button class="tab" id="tab-mfg" data-pane="pane-mfg" role="tab" aria-selected="false">02 可制造性</button>
+        <button class="tab" id="tab-c2m" data-pane="pane-c2m" role="tab" aria-selected="false">03 C2M 柔性定制</button>
+        <button class="tab" id="tab-service" data-pane="pane-service" role="tab" aria-selected="false">04 企业服务层</button>
+        <button class="tab" id="tab-ip" data-pane="pane-ip" role="tab" aria-selected="false">05 文化 IP 管线</button>
+      </div>
+
+      <div style="padding: 20px">
+        <section id="pane-creative" class="tabpane active" role="tabpanel" aria-labelledby="tab-creative">
+          <div class="panel-title">
+            <div><div class="eyebrow">A · co-creation</div><h2>工艺 AI 共创</h2><p>先做概念，再做授权校验；AI 只出初稿，匠人保留最终判断。</p></div>
+            <span class="badge info">AI first-pass</span>
+          </div>
+          <div class="grid two" style="align-items:start">
+            <div class="stack">
+              <div class="row">
+                <label class="field" style="flex:1; margin-bottom:0"><span>工艺路线</span><select id="craft-select"><option value="jewelry">珠宝 · 花丝镶嵌</option><option value="wood">红木 · 榫卯雕刻</option></select></label>
+                <label class="field" style="flex:1; margin-bottom:0"><span>审美方向</span><select id="style-select"><option value="oriental">东方雅致</option><option value="modern">现代几何</option><option value="festive">节庆礼赠</option></select></label>
+              </div>
+              <div class="row">
+                <label class="field" style="flex:1; margin-bottom:0"><span>共创交易模式</span><select id="deal-mode"><option value="commission">设计师佣金</option><option value="buyout">一次买断</option><option value="share">销售分成</option></select></label>
+                <button class="btn primary" id="generate-concept" type="button" style="align-self:end">生成概念稿</button>
+              </div>
+              <div class="divider"></div>
+              <div class="mini-label">版权与授权字段（全部必填）</div>
+              <div class="grid two" style="gap:8px">
+                <label class="field"><span>纹样来源</span><select id="license-source"><option value="self-made">团队自研</option><option value="licensed">已授权第三方</option><option value="public">公共领域</option><option value="missing">待补充</option></select></label>
+                <label class="field"><span>授权编号</span><input id="license-id" type="text" value="LIC-DEMO-2026-001"></label>
+                <label class="field"><span>授权地域</span><select id="license-territory"><option value="cn">中国大陆</option><option value="global">全球</option><option value="missing">待确认</option></select></label>
+                <label class="field"><span>允许衍生</span><select id="license-derivative"><option value="yes">是，需署名</option><option value="no">否</option><option value="missing">待确认</option></select></label>
+              </div>
+              <div class="row"><span id="license-status" class="badge">待校验</span><button class="btn small" id="validate-license" type="button">校验授权</button><button class="btn small" id="lock-concept" type="button" disabled>锁定概念</button></div>
+              <div class="note"><b>三种交易模式：</b>佣金按最终成交额计；买断一次性支付、不随销量追加；分成按合同周期结算。模式进入报价单，不在交付后口头变更。</div>
+            </div>
+            <div>
+              <div class="concept-frame">
+                <div id="concept-preview"></div>
+                <div class="concept-caption"><span id="concept-caption">合成概念稿 · 尚未生成</span><span id="concept-tag">DEMO</span></div>
+              </div>
+              <div class="note mt12"><b>AI 初稿 + 匠人复核：</b>AI 负责组合纹样、配色和结构建议；工艺师逐项确认可制造性。概念稿不是生产图纸，进入打样前必须经过 02 模块。</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pane-mfg" class="tabpane" role="tabpanel" aria-labelledby="tab-mfg">
+          <div class="panel-title">
+            <div><div class="eyebrow">A · manufacturability</div><h2>可制造性评估</h2><p>规则在 JSON 配置里，非程序员可改阈值；输出“能做/风险/做不了 + 改哪里”。</p></div>
+            <span class="badge warn">AI 初判 · 匠人复核</span>
+          </div>
+          <div class="grid two" style="align-items:start">
+            <div>
+              <label class="field"><span>工艺路线</span><select id="mfg-craft"><option value="jewelry">珠宝 · 花丝镶嵌</option><option value="wood">红木 · 榫卯雕刻</option></select></label>
+              <div id="mfg-form" class="grid two" style="gap:8px"></div>
+              <div class="row"><button class="btn primary" id="run-mfg" type="button">重新评估</button><span class="badge" id="mfg-summary">待评估</span></div>
+              <div class="note mt12"><b>规则配置：</b>每条规则含字段、比较符、阈值、等级和建议；改配置即改判定，不改代码。规则版本随报价单冻结。</div>
+              <pre class="code mt12" id="rule-json" aria-label="规则配置 JSON"></pre>
+            </div>
+            <div class="card tight">
+              <div class="row between"><h3>评估结果</h3><span class="tiny" id="mfg-meta"></span></div>
+              <div class="table-wrap mt12"><table><thead><tr><th>检查项</th><th>输入</th><th>判定</th><th>建议</th></tr></thead><tbody id="mfg-rows"></tbody></table></div>
+              <div id="mfg-advice" class="mt12"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pane-c2m" class="tabpane" role="tabpanel" aria-labelledby="tab-c2m">
+          <div class="panel-title">
+            <div><div class="eyebrow">A · C2M</div><h2>预售 → 派单 → 质检 → 结算</h2><p>阶段可推进、分成可复算、质检和退款规则在链路里；不是一张流程图。</p></div>
+            <span class="badge info">6 stages</span>
+          </div>
+          <div class="grid two" style="align-items:start">
+            <div class="card tight">
+              <div class="row between"><h3>订单阶段</h3><span id="c2m-status" class="badge">预售中</span></div>
+              <div id="c2m-stages" class="stepbar mt12"></div>
+              <div class="row mt16"><button class="btn primary" id="c2m-advance" type="button">推进到下一阶段</button><button class="btn" id="c2m-reset" type="button">重置</button><span class="tiny" id="c2m-hint">当前阶段：预售与需求确认</span></div>
+              <div id="c2m-events" class="stack mt12" aria-live="polite"></div>
+              <div class="note mt12"><b>质量门：</b>质检不合格时不允许发货；返工记录绑定订单；退款按阶段和已发生工时计算，规则在配置中。</div>
+            </div>
+            <div class="card tight">
+              <h3>分成账本</h3>
+              <label class="field mt12"><span>订单成交额（元）</span><input id="c2m-amount" type="number" min="1" step="1" value="12800"></label>
+              <div id="c2m-ledger" class="ledger"></div>
+              <div class="note mt12"><b>结算口径：</b>设计师 12% · 平台 8% · 工坊 80%；金额四舍五入到分并做尾差校正，确保三项之和等于成交额。</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pane-service" class="tabpane" role="tabpanel" aria-labelledby="tab-service">
+          <div class="panel-title">
+            <div><div class="eyebrow">B · shared AI service layer</div><h2>企业智能体服务层</h2><p>同一套组件按行业配置复用：知识库、智能体、流程、展示、经营分析、出海内容。</p></div>
+            <span class="badge good">6 industries</span>
+          </div>
+          <div id="service-grid" class="grid three"></div>
+          <div class="grid two mt16" style="align-items:start">
+            <div class="card tight"><h3>行业配置输出</h3><p class="sub">选择行业卡片，生成该行业的启用模块与 FDE 交付模板。</p><pre class="code mt12" id="service-json" aria-label="行业配置 JSON"></pre></div>
+            <div class="card tight"><h3>FDE 交付模板</h3><ul class="clean mt8"><li>需求工作坊 → 数据/接口清单 → 组件配置 → 验收脚本</li><li>每个行业至少 1 个可点通场景 + 1 份失败路径测试</li><li>上线后看板：采用率、转人工率、失败率、内容引用率</li><li>不把“模型上线”当交付完成；以业务动作闭环为准</li></ul><div class="note mt12"><b>复用边界：</b>组件复用，数据和权限不跨行业混用；每个行业独立配置、独立验收。</div></div>
+          </div>
+        </section>
+
+        <section id="pane-ip" class="tabpane" role="tabpanel" aria-labelledby="tab-ip">
+          <div class="panel-title">
+            <div><div class="eyebrow">C · cultural IP</div><h2>双角色内容与授权管线</h2><p>原创角色“远视 / 远听”：剧本 → 分镜 → 角色资产 → 视频 → 配音 → 字幕 → 审核；授权台账与质量门一起走。</p></div>
+            <span class="badge info">original characters</span>
+          </div>
+          <div class="grid two" style="align-items:start">
+            <div>
+              <div class="grid two">
+                <div class="character"><div class="face" aria-hidden="true"></div><h3 class="mt8">远视 · 观察者</h3><p class="sub">记录细节，不替消费者下结论。</p></div>
+                <div class="character"><div class="face" aria-hidden="true"></div><h3 class="mt8">远听 · 倾听者</h3><p class="sub">收集反馈，不冒充传统/宗教形象。</p></div>
+              </div>
+              <div class="note mt12"><b>原创声明：</b>两个角色为本项目原创演示形象，不使用、不主张任何传统纹样、宗教符号或既有 IP 的排他权；对外授权前先完成近似检索和法务复核。</div>
+              <div class="row mt12"><button class="btn primary" id="ip-advance" type="button">推进内容管线</button><span id="ip-status" class="badge">剧本</span></div>
+              <div id="ip-pipeline" class="stepbar mt12"></div>
+            </div>
+            <div class="card tight">
+              <h3>授权台账</h3>
+              <div class="ledger mt12">
+                <div class="ledger-row"><span>授权对象</span><b>合成品牌 A（演示）</b></div>
+                <div class="ledger-row"><span>授权地域</span><b>中国大陆 · 非独家</b></div>
+                <div class="ledger-row"><span>允许媒介</span><b>短视频 / 电商详情页</b></div>
+                <div class="ledger-row"><span>禁止用途</span><b>医疗背书 / 金融承诺 / 转授权</b></div>
+                <div class="ledger-row"><span>审核状态</span><b><span class="badge good">法务复核通过（演示）</span></b></div>
+              </div>
+              <div class="note mt12"><b>衍生质量规则：</b>角色比例、配色、口头禅不得改写；不得生成与真人肖像混淆的形象；每条素材保留 prompt、模型版本和人工审核记录。</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding: 8px 0 26px">
+    <div class="grid two" style="align-items:start">
+      <div class="card" id="checks">
+        <div class="panel-title">
+          <div><div class="eyebrow">Runnable checks</div><h2>交付自检</h2><p>点击运行：验证授权字段、规则确定性、C2M 账本、阶段顺序、IP 原创声明和行业配置。</p></div>
+          <span class="badge" data-check-summary>未运行</span>
+        </div>
+        <div id="check-list" class="checklist"></div>
+        <div class="row mt12"><button class="btn primary" id="run-checks" type="button">运行自检</button><span class="tiny">浏览器内确定性断言，无后端依赖。</span></div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Phase-1 delivery</div>
+        <h2 class="mt8">报价按模块拆，不按“PPT 页数”拆</h2>
+        <ul class="clean mt12">
+          <li><b>A 共创 + C2M：</b>概念工作台、授权校验、可制造性规则、订单阶段与分成账本；先珠宝/红木两条线。</li>
+          <li><b>B 服务层：</b>六个行业配置和通用组件，先交付知识库/智能体/展示三条；CRM 与出海内容随后接入。</li>
+          <li><b>C 文化 IP：</b>角色资产、内容管线、授权台账和审核规则；先交付 2 条可复跑短片流程。</li>
+          <li><b>D 赛事包：</b>可选；在 A/B/C 稳定后追加，不纳入一期固定范围。</li>
+          <li><b>验收：</b>每模块一条命令/入口、输入样例、预期结果和可重跑证据；页面内所有断言可复现。</li>
+        </ul>
+        <div class="demo-note mt16"><b>合成声明：</b>页面中的工艺参数、订单金额、品牌和角色均为演示；生产落地需工厂工艺师、法务和真实数据源复核。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <div class="row between">
+    <span>ClawHunt FDE Demo Studio · Industry / 1724 · 合成数据 · 纯静态</span>
+    <span><a href="../">返回 hub</a> · <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">GitHub 源码</a></span>
+  </div>
+</footer>
+
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
