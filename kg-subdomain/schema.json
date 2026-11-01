@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "entity_types": ["supplier", "material", "contract", "department"],
+  "relation_types": ["supplies", "covers_supplier", "includes_material", "owns_contract", "certifies", "substitutes"],
+  "required_entity_fields": ["id", "type", "name", "aliases", "properties", "permission"],
+  "required_relation_fields": ["id", "type", "from", "to", "evidence"],
+  "required_evidence_fields": ["source_id", "locator", "quote", "updated_at"],
+  "permission_fields": ["visibility", "owner_department"]
+}
