@@ -3,9 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ClawHunt FDE Demo Studio · 可运行交付样例</title>
-<meta name="description" content="四个可点通的交付样例：GEO 可见度监测、东南亚招聘 Voice AI、AI 购物助手、区域产业 AI 平台。纯静态、零后端、无密钥，托管在 GitHub Pages。">
+<title>ClawHunt FDE Demo Studio · 六个可运行交付样例</title>
+<meta name="description" content="六个可点通的交付样例：GEO 可见度监测、招聘 Voice AI、AI 购物助手、报关自动化、表格清洗、海外社媒矩阵，另附产业 AI 示例。纯静态、零后端、无密钥，托管在 GitHub Pages。">
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="./assets/demo.css">
+<style>
+.never-down .checkrow { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16); color:#eaf7f7; }
+.never-down .checkrow .detail { color:#9fd4d4; }
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -15,6 +20,9 @@
       <a href="./geo/">GEO 监测</a>
       <a href="./voice/">Voice AI</a>
       <a href="./shopping/">购物助手</a>
+      <a href="./customs/">报关自动化</a>
+      <a href="./sheet/">表格清洗</a>
+      <a href="./social/">社媒获客</a>
       <a href="./industry/">产业 AI</a>
       <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">源码 ↗</a>
     </nav>
@@ -25,14 +33,14 @@
   <section class="hero wrap">
     <div class="eyebrow">Always-on static demos · synthetic data only</div>
     <h1>把方案变成<br>甲方现在就能点开的演示。</h1>
-    <p class="lede">四个独立的交付样例，对应四类真实项目需求。全部是纯前端静态页面：不依赖本机、不需要后端、不保存密钥，托管在 GitHub Pages，电脑关机后链接照常打开。</p>
+    <p class="lede">六个独立的交付样例，对应六类真实项目需求，另附一个产业 AI 串联示例。全部是纯前端静态页面：不依赖本机、不需要后端、不保存密钥，托管在 GitHub Pages，电脑关机后链接照常打开。</p>
     <div class="hero-actions">
-      <a class="btn primary" href="#demos">打开四个演示 ↓</a>
+      <a class="btn primary" href="#demos">打开六个演示 ↓</a>
       <a class="btn" href="#always-on">为什么关机也能跑</a>
       <a class="btn ghost" href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">查看源码 ↗</a>
     </div>
     <div class="grid four mt24">
-      <div class="kpi"><div class="k">交付样例</div><div class="v">4</div><div class="d">各自独立入口、可复跑自检</div></div>
+      <div class="kpi"><div class="k">交付样例</div><div class="v">6</div><div class="d">各自独立入口、可复跑自检</div></div>
       <div class="kpi"><div class="k">后端依赖</div><div class="v">0</div><div class="d">浏览器内完成全部交互</div></div>
       <div class="kpi"><div class="k">API 密钥</div><div class="v">0</div><div class="d">无真实账号、无真实客户数据</div></div>
       <div class="kpi"><div class="k">托管方式</div><div class="v">静态</div><div class="d">GitHub Pages · 7×24 可访问</div></div>
@@ -42,7 +50,7 @@
 
   <section id="demos" class="wrap" style="padding: 10px 0 30px">
     <div class="panel-title">
-      <div><div class="eyebrow">Four demos</div><h2>四个可点通的样例</h2><p>每个入口都有独立的交互、证据留存和自检，不是一张截图。</p></div>
+      <div><div class="eyebrow">Six demos + one extra</div><h2>六个可点通的样例</h2><p>每个入口都有独立的交互、证据留存和自检，不是一张截图。</p></div>
     </div>
     <div class="grid two">
       <article class="card">
@@ -82,8 +90,44 @@
       </article>
 
       <article class="card">
-        <div class="row between"><span class="badge info">Industry / 1724</span><span class="badge good">可交互</span></div>
-        <h3 class="mt12">区域特色产业 AI 赋能一期</h3>
+        <div class="row between"><span class="badge info">报关自动化 / 1364</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">报关单证回填与差异校验</h3>
+        <p class="sub">合同、ERP、发票、归档串成一条可复核链路：HS 归类、组合 SKU 拆分、单位换算、缺失字段拦截、发票与合同差异、金额平衡和归档清单。</p>
+        <ul class="clean fs13 mt12">
+          <li>50 批字段一致率 99.57%，差异与缺失单独列</li>
+          <li>组合装 40 SET → 80 PCS，净重/毛重闭合</li>
+          <li>本地 VM + 本地模型边界，源码/部署/手册可独立跑</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./customs/">打开报关演示 →</a><span class="tiny">四模块 · 10 项自检</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">表格清洗 / 1462</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">脏表清洗与异常清单</h3>
+        <p class="sub">先确认字段和规则，再处理空值、重复、日期、手机号、金额；无法判定的行单独列异常，原始数据只读，结果可下载 CSV。</p>
+        <ul class="clean fs13 mt12">
+          <li>12 行样例：8 行可交付、4 行异常/重复</li>
+          <li>7 条规则可开关，改规则实时重算</li>
+          <li>10 项自检 + 处理说明随表交付</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./sheet/">打开表格演示 →</a><span class="tiny">交付优先 · 可下载</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">社媒获客 / 1539</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">海外社媒矩阵内容流水线</h3>
+        <p class="sub">3 个 Facebook 账号、7 天 21 条草稿：选题、生成、合规、人工批准、模拟发布、429 恢复、数据反馈，每一步有状态和证据。</p>
+        <ul class="clean fs13 mt12">
+          <li>人工批准门不可绕过，失败重试复用幂等键</li>
+          <li>合规扫描覆盖医疗、绝对化、结果保证、无来源数据</li>
+          <li>开发 $300 + 月运营 $450 分开列，不承诺线索</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./social/">打开社媒演示 →</a><span class="tiny">人工在环 · 失败可恢复</span></div>
+      </article>
+
+      <article class="card">
+        <div class="row between"><span class="badge info">附加 / 1724</span><span class="badge good">可交互</span></div>
+        <h3 class="mt12">区域特色产业 AI 赋能一期（附加）</h3>
         <p class="sub">四块拼成一个可点通的产业平台：工艺 AI 共创、可制造性规则评估、C2M 预售/派单/结算链路、企业智能体服务层、文化 IP 双角色管线。</p>
         <ul class="clean fs13 mt12">
           <li>工艺规则用配置表达，非程序员可改参数</li>
@@ -96,7 +140,7 @@
   </section>
 
   <section id="always-on" class="wrap" style="padding: 10px 0 26px">
-    <div class="card" style="background: linear-gradient(135deg, #0d2632, #123e46); color: #eaf7f7; border-color: #123e46">
+    <div class="card never-down" style="background: linear-gradient(135deg, #0d2632, #123e46); color: #eaf7f7; border-color: #123e46">
       <div class="grid two" style="align-items: center">
         <div>
           <div class="eyebrow" style="color:#8fe0d6">Always-on, by design</div>
@@ -116,7 +160,7 @@
   <section class="wrap" style="padding: 10px 0 30px">
     <div class="grid three">
       <div class="card tight"><h3>验收看什么</h3><p class="sub">先打开任一 demo，点“运行自检”。自检项是断言，不是文案：抽取字段、证据完整性、规则判定、结算总和、API 契约都会被逐项检查。</p></div>
-      <div class="card tight"><h3>源码在哪</h3><p class="sub">完整源码树在 <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">Gupeat/clawhunt-agent-demos</a>；本页与四个 demo 都放在 <span class="mono">docs/</span>，可一键 fork 或私有化部署。</p></div>
+      <div class="card tight"><h3>源码在哪</h3><p class="sub">完整源码树在 <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">Gupeat/clawhunt-agent-demos</a>；本页与六个 demo 都放在 <span class="mono">docs/</span>，可一键 fork 或私有化部署。</p></div>
       <div class="card tight"><h3>已有 Python 交付样例</h3><p class="sub">另有两个可离线复跑的 Python 样例：<a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/customs-agent" target="_blank" rel="noopener">报关表回填</a>（10 项测试）与 <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/social-workflow" target="_blank" rel="noopener">社媒获客工作流</a>（6 项测试）。</p></div>
     </div>
   </section>

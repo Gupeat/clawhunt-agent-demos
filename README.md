@@ -1,17 +1,44 @@
-# Agent workflow demos
+# Agent demos
 
-Two small, self-contained reference implementations for recent ClawHunt briefs:
+Six browser-only demos in [`docs/`](docs/) plus two offline Python references.
+The static pages are the proposal evidence for the current ClawHunt briefs; the
+Python references show the same control flow as runnable, test-backed code.
+
+## Browser demos
 
 | Demo | Brief | What it proves |
 |---|---|---|
-| [`social-workflow/`](social-workflow/) | #1539, overseas social-media lead-gen workflow | Draft -> human review -> mock publish -> failure recovery -> metrics feedback, with idempotency and a hard review gate |
-| [`customs-agent/`](customs-agent/) | #1364, cross-border customs automation | BOM split, unit conversion, 50-batch consistency, invoice/tax comparison, e-tax human gate, remaining quantity |
+| [GEO visibility](`docs/geo/`) | #1365 | 6-platform monitoring, citation evidence, variance and extraction checks |
+| [Recruiting Voice AI](`docs/voice/`) | #1639 | state machine, silence/barge-in, API failure fallback, scorecard and 12 QA rows |
+| [Shopping assistant](`docs/shopping/`) | #1339 | grounded C-end answers, compliance scanning, structured B-end response |
+| [Customs automation](`docs/customs/`) | #1364 | HS/BOM split, missing-field gate, invoice diff, archive, 50-batch replay |
+| [Spreadsheet cleanup](`docs/sheet/`) | #1462 | field rules, dedupe, CSV delivery, exception list, 10 checks |
+| [Social matrix](`docs/social/`) | #1539 | approval gate, 429 recovery with idempotency, feedback, cost split |
+| [Industry AI (extra)](`docs/industry/`) | #1724 | configurable rules, C2M ledger, IP/license pipeline |
 
-Both are standard-library Python, run offline, and use synthetic data. They are **evidence of process and boundaries**, not production systems.
+Open [`docs/index.html`](docs/index.html) or the GitHub Pages hub. Everything in
+`docs/` is pure HTML/CSS/JS: no backend, no API keys, synthetic data only.
+
+## Python references
+
+| Demo | Brief | What it proves |
+|---|---|---|
+| [`social-workflow/`](social-workflow/) | #1539 | same workflow as a standard-library Python reference |
+| [`customs-agent/`](customs-agent/) | #1364 | same customs control flow as a standard-library Python reference |
+
+Both Python demos run offline and use synthetic data. They are **evidence of
+process and boundaries**, not production systems.
 
 ## Quick start
 
-Requires Python 3.10+; no third-party packages.
+Browser demos: serve `docs/` and open the hub.
+
+```bash
+python -m http.server 8799
+# http://127.0.0.1:8799/docs/
+```
+
+Python references require Python 3.10+; no third-party packages.
 
 ```bash
 # social workflow
@@ -25,7 +52,7 @@ python customs_agent.py demo
 python -m unittest discover -s tests -v
 ```
 
-## What each demo outputs
+## What each Python demo outputs
 
 ### Social workflow
 
@@ -57,8 +84,9 @@ The run ends with 3 published posts, 1 permanent failure, 1 pending review and 1
 ## Repository layout
 
 ```text
-social-workflow/            # demo 1
-customs-agent/              # demo 2
+docs/                       # six static browser demos + hub
+social-workflow/            # Python reference: social workflow
+customs-agent/              # Python reference: customs automation
 .gitignore
 LICENSE
 README.md
@@ -67,10 +95,11 @@ README.md
 ## Design boundaries
 
 - No real Facebook accounts, ERP, DingTalk, e-tax endpoint, API key or customer data.
-- No network calls in either demo.
+- No network calls in any demo.
 - The e-tax path is preview-only and deliberately blocks unattended submission.
 - The 50-batch result is synthetic. It is not evidence that a real 50-batch customer dataset has passed 99.5% acceptance.
-- Both demos are intentionally narrow: they show the control flow and artifacts the brief asks for, not a full production integration.
+- The browser demos are intentionally narrow: they show the control flow and artifacts the brief asks for, not a full production integration.
+- Customs and social browser demos use synthetic rows/drafts; the Python references reuse the same synthetic scenarios.
 
 ## Test evidence
 

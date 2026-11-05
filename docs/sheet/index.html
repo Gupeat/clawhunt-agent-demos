@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>表格清洗与交付 · 可点通演示</title>
+<meta name="description" content="把脏表变成可交付的表：字段统一、去重、异常单列、原始数据留痕、CSV 下载，附 10 项可运行自检。">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../assets/demo.css">
+<style>
+.sheet-layout { display:grid; grid-template-columns:310px minmax(0,1fr); gap:16px; align-items:start; }
+.sheet-control { position:sticky; top:78px; }
+.rule-list { display:grid; gap:7px; }
+.rule-list label { display:flex; gap:9px; align-items:flex-start; border:1px solid var(--line-soft); background:#fbfdff; border-radius:8px; padding:8px 9px; font-size:12.5px; cursor:pointer; }
+.rule-list input { margin-top:2px; accent-color:var(--accent); flex:none; }
+.rule-list b { display:block; font-size:12.5px; }
+.rule-list span span { color:var(--faint); font-size:11.5px; }
+.file-drop { border:1px dashed #b9d6dd; border-radius:9px; background:#f5fbfb; padding:11px; font-size:12px; color:var(--muted); }
+.file-drop input { display:block; width:100%; margin-top:6px; font-size:11.5px; }
+.cell-bad { background:#fff3f1; box-shadow:inset 0 -2px 0 #f3b8b1; }
+.cell-fixed { background:#f1fbf5; box-shadow:inset 0 -2px 0 #bce5cd; }
+.tag-row { white-space:nowrap; }
+.result-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.mapping-table td, .mapping-table th { white-space:normal; }
+.issue-field { font-family:Consolas,monospace; font-size:11.5px; color:var(--bad); }
+.notes-box { border:1px solid var(--line); border-radius:10px; background:#fbfdff; padding:14px; font-size:13px; color:var(--muted); white-space:pre-wrap; line-height:1.75; }
+.statbar { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
+@media (max-width:900px){ .sheet-layout{grid-template-columns:1fr;} .sheet-control{position:static;} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ 表格交付</span></a>
+    <nav class="navlinks" aria-label="演示导航">
+      <a href="../geo/">GEO 监测</a><a href="../voice/">Voice AI</a><a href="../shopping/">购物助手</a>
+      <a href="../customs/">报关自动化</a><a class="active" href="./">表格清洗</a><a href="../social/">社媒获客</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/docs/sheet" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Spreadsheet cleanup · deliverable-first</div>
+    <h1>把脏表变成能交付的表，<br>异常不藏，原始数据不动。</h1>
+    <p class="lede">一个浏览器内运行的表格清洗工作台：先确认字段与规则，再执行去重、日期/手机号/金额标准化；无法自动判定的行单列成异常清单。原始表只读，结果可下载 CSV，处理说明随表交付。</p>
+    <div class="row mt16"><span class="badge warn">合成样例 · 非真实客户数据</span><span class="badge info">纯前端 · 不上传</span><span class="badge good" id="run-state">默认规则已就绪</span></div>
+    <div class="kpis mt24">
+      <div class="kpi"><div class="k">原始数据</div><div class="v" id="kpi-raw">—</div><div class="d">只读保留，不覆盖源文件</div></div>
+      <div class="kpi"><div class="k">可交付行</div><div class="v" id="kpi-clean">—</div><div class="d">通过字段校验并进入结果</div></div>
+      <div class="kpi"><div class="k">异常 / 重复</div><div class="v" id="kpi-issues">—</div><div class="d">逐行给出原因与建议动作</div></div>
+      <div class="kpi"><div class="k">字段修正</div><div class="v" id="kpi-fixed">—</div><div class="d">手机号/日期/金额/文本归一</div></div>
+    </div>
+  </section>
+
+  <section class="sheet-layout">
+    <aside class="card sheet-control">
+      <div class="panel-title"><div><h3>清洗规则</h3><p>规则可开关，结果实时重算。</p></div></div>
+      <div class="rule-list" id="rules">
+        <label><input type="checkbox" data-rule="trim" checked><span><b>文本去空格</b><span>客户名、城市、状态去首尾空格</span></span></label>
+        <label><input type="checkbox" data-rule="phone" checked><span><b>手机号标准化</b><span>11 位 → +86 格式；非法值进异常</span></span></label>
+        <label><input type="checkbox" data-rule="date" checked><span><b>日期标准化</b><span>统一 YYYY-MM-DD；非法日期进异常</span></span></label>
+        <label><input type="checkbox" data-rule="money" checked><span><b>金额标准化</b><span>去掉币种/千分位，统一两位小数</span></span></label>
+        <label><input type="checkbox" data-rule="email" checked><span><b>邮箱格式校验</b><span>格式不合法不静默修复，单列异常</span></span></label>
+        <label><input type="checkbox" data-rule="dedupe" checked><span><b>按邮箱去重</b><span>保留首条，后续行标为重复</span></span></label>
+        <label><input type="checkbox" data-rule="keep" checked><span><b>异常行保留在交付表</b><span>关闭后仅输出可交付行</span></span></label>
+      </div>
+      <div class="divider"></div>
+      <div class="stack">
+        <button class="btn primary" id="run-clean">重新运行清洗</button>
+        <button class="btn" id="reset-sample">恢复 12 行样例</button>
+        <button class="btn" id="download-csv">下载清洗后 CSV</button>
+      </div>
+      <div class="divider"></div>
+      <div class="file-drop">
+        <b>换成你的 CSV？</b><br>表头需包含：客户名称、邮箱、电话、下单日期、金额、城市、状态。文件只在浏览器内解析，不上传。
+        <input type="file" id="csv-file" accept=".csv,text/csv">
+      </div>
+      <p class="tiny mt12">演示口径：币种统一按人民币展示；真实项目先确认源字段、缺失值含义和去重键，再写规则。异常不猜、不补造。</p>
+    </aside>
+
+    <div class="stack">
+      <section class="card">
+        <div class="panel-title">
+          <div><h3>清洗结果</h3><p id="result-sub">默认规则：12 行样例，按邮箱去重，异常行保留。</p></div>
+          <div class="result-toolbar"><span class="badge" id="output-count">—</span><button class="btn small" id="copy-notes">复制处理说明</button></div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="结果视图">
+          <button class="tab active" data-tab="table">交付预览</button>
+          <button class="tab" data-tab="issues">异常清单</button>
+          <button class="tab" data-tab="mapping">字段与规则</button>
+          <button class="tab" data-tab="notes">处理说明</button>
+          <button class="tab" data-tab="checks">运行自检</button>
+        </div>
+
+        <div class="tabpane active" id="pane-table">
+          <div class="table-wrap mt12">
+            <table><thead><tr><th>原行</th><th>客户</th><th>邮箱</th><th>手机</th><th>下单日期</th><th>金额</th><th>城市</th><th>状态</th><th>校验</th></tr></thead>
+            <tbody id="result-body"></tbody></table>
+          </div>
+          <div class="statbar"><span class="badge good">绿色底 = 已标准化</span><span class="badge warn">红色底 = 需人工确认</span><span class="badge">重复行不进入可交付集</span></div>
+          <p class="tiny mt12">交付前请先确认：字段映射是否与你的业务一致、异常清单是否可接受、原始文件是否另存。演示不替代你的业务验收。</p>
+        </div>
+
+        <div class="tabpane" id="pane-issues">
+          <div class="row between mt12"><span class="muted fs13" id="issue-sub">—</span><span class="badge bad" id="issue-count">0 条</span></div>
+          <div class="table-wrap mt12"><table><thead><tr><th>行</th><th>字段</th><th>原始值</th><th>原因</th><th>建议动作</th></tr></thead><tbody id="issue-body"></tbody></table></div>
+          <div class="note warn mt12">原则：能确定的规则自动处理；不能确定的不猜。比如“2026-13-02”不会被悄悄改成某个日期，“liu.yang@example”也不会被补成猜测的域名。</div>
+        </div>
+
+        <div class="tabpane" id="pane-mapping">
+          <div class="table-wrap mt12"><table class="mapping-table"><thead><tr><th>源字段</th><th>交付字段</th><th>处理规则</th><th>失败时</th></tr></thead><tbody>
+            <tr><td>客户名称</td><td>customer_name</td><td>去首尾空格；空值不补造</td><td>标缺失，人工确认</td></tr>
+            <tr><td>邮箱</td><td>email</td><td>去空格 + 转小写 + 格式校验；作为去重键</td><td>标格式错误，不进入自动去重</td></tr>
+            <tr><td>电话</td><td>phone</td><td>去分隔符；11 位手机号统一 +86 格式</td><td>标非法号码，保留原值供核对</td></tr>
+            <tr><td>下单日期</td><td>order_date</td><td>接受 YYYY-MM-DD / YYYY/M/D / YYYY.M.D / M/D/YYYY，输出 ISO 日期</td><td>非法/空值进异常</td></tr>
+            <tr><td>金额</td><td>amount_cny</td><td>去币种符号与千分位，保留两位小数</td><td>空值/非数字进异常，不按 0 处理</td></tr>
+            <tr><td>城市</td><td>city</td><td>去空格；“上海/Shanghai”归并为“上海”</td><td>无法归并保留原值</td></tr>
+            <tr><td>状态</td><td>status</td><td>去空格；空值写“待确认”并标记</td><td>不猜“已付款/已退款”</td></tr>
+          </tbody></table></div>
+          <div class="grid two mt16">
+            <div class="card tight" style="box-shadow:none"><h3>交付格式</h3><p class="sub">CSV（UTF-8 with BOM）可直接用 Excel 打开；字段名使用英文 snake_case，日期 ISO 8601，金额为两位小数。另附本页处理说明与异常清单。</p></div>
+            <div class="card tight" style="box-shadow:none"><h3>不做什么</h3><p class="sub">不覆盖源文件；不猜缺失邮箱/日期/金额；不把重复行合并金额；不在未确认时删除异常行。所有无法自动判定的内容都留给人工。</p></div>
+          </div>
+        </div>
+
+        <div class="tabpane" id="pane-notes">
+          <div class="notes-box mt12" id="notes-box">运行后生成处理说明。</div>
+          <div class="row mt12"><button class="btn small" id="copy-notes-2">复制这段说明</button><span class="tiny">可直接作为交付邮件正文或工单备注。</span></div>
+        </div>
+
+        <div class="tabpane" id="pane-checks">
+          <div class="panel-title mt12"><div><h3>10 项可运行自检</h3><p>断言标准化函数、去重行为、原始数据不可变与 CSV 输出契约。</p></div><button class="btn small" id="run-checks">重新运行</button><span class="badge good" data-check-summary>—</span></div>
+          <div class="checklist" id="checklist"></div>
+          <div class="note mt12">自检是演示级单元断言，不等同于你的生产验收。真实交付会在你的样例数据上先跑一遍，双方确认字段、异常口径和抽样结果后再批量处理。</div>
+        </div>
+      </section>
+
+      <section class="grid three">
+        <div class="card tight"><h3>输入先对齐</h3><p class="sub">先确认用途、字段、缺失/重复/格式规则、交付格式。需求不清时先出 10 行试洗，不直接批量改全表。</p></div>
+        <div class="card tight"><h3>结果可复核</h3><p class="sub">每行保留原始行号；每个异常保留原始值与原因；可下载结果与处理说明，抽样 10% 人工复核。</p></div>
+        <div class="card tight"><h3>边界说清楚</h3><p class="sub">清洗不等于补全。缺失值、歧义日期、跨系统 ID 映射要业务确认；本演示不连接你的网盘、邮箱或数据库。</p></div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap"><div class="row between"><span>Spreadsheet cleanup demo · synthetic rows only · static build</span><a href="../">← 返回演示索引</a></div></footer>
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

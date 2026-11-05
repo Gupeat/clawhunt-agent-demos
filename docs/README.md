@@ -1,8 +1,9 @@
 # ClawHunt demo pages
 
-Four static, browser-only demos used as proposal evidence for ClawHunt tasks.
-No API keys, no backend, no customer data. Hosted with GitHub Pages so the
-pages keep running when the author's computer is off.
+Six static, browser-only demos used as proposal evidence for ClawHunt tasks,
+plus one extra regional-industry example. No API keys, no backend, no customer
+data. Hosted with GitHub Pages so the pages keep running when the author's
+computer is off.
 
 ## Pages
 
@@ -11,7 +12,10 @@ pages keep running when the author's computer is off.
 | GEO visibility monitor | [geo/](geo/) | #1365 | 6 platforms, 8 checks, evidence + variance |
 | Recruiting Voice AI | [voice/](voice/) | #1639 | 3 scenarios, 12 QA rows, failure/fallback paths |
 | AI shopping assistant | [shopping/](shopping/) | #1339 | 5 synthetic products, 7 checks, C/B API contract |
-| Regional industry AI | [industry/](industry/) | #1724 | 5 modules, 8 checks, license/rules/C2M ledger |
+| Customs automation | [customs/](customs/) | #1364 | 4 modules, 10 checks, 50-batch replay at 99.57% |
+| Spreadsheet cleanup | [sheet/](sheet/) | #1462 | 7 rules, 12 rows, exception list, CSV download, 10 checks |
+| Social matrix | [social/](social/) | #1539 | 3 accounts, 21 drafts, approval gate, 429 recovery, 10 checks |
+| Regional industry AI (extra) | [industry/](industry/) | #1724 | 5 modules, 8 checks, license/rules/C2M ledger |
 
 Root hub: [index.html](index.html).
 
@@ -35,9 +39,13 @@ python -m http.server 8799
 ## Verification
 
 Browser checks were run through the Edge DevTools Protocol against the local
-server. All four pages load with no runtime/console errors:
+server. All seven pages load with no runtime/console errors and no horizontal
+overflow at 1280 px:
 
 - GEO: 8/8 assertions
 - Voice: 12/12 QA rows
 - Shopping: 7/7 assertions
+- Customs: 10/10 assertions; fill -> 28/28 fields, $0.00 balance, 7/7 archive
+- Sheet: 10/10 checks; 12 raw, 8 clean, 4 exceptions
+- Social: 10/10 checks; 21 cards, approve/publish and 429 retry work
 - Industry: 8/8 assertions

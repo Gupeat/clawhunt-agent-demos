@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>海外社媒矩阵 · 内容与获客流水线演示</title>
+<meta name="description" content="Facebook 多账号内容矩阵：选题日历、合规扫描、人工批准、模拟发布、失败重试、数据反馈与成本口径。纯静态合成演示。">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../assets/demo.css">
+<style>
+.social-layout { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr); gap:16px; align-items:start; }
+.pipeline { display:grid; grid-template-columns:repeat(6,1fr); gap:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff; }
+.pipe { padding:11px 12px; border-right:1px solid var(--line-soft); font-size:11.5px; color:var(--faint); }
+.pipe:last-child { border-right:0; }
+.pipe b { display:block; color:var(--ink); font-size:12.5px; margin-bottom:2px; }
+.pipe.active { background:#edf9f9; }
+.pipe.active b { color:var(--accent-dark); }
+.calendar-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+.calendar { display:grid; grid-template-columns:108px repeat(7, minmax(110px,1fr)); min-width:880px; }
+.cal-cell { border-right:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); padding:8px; min-height:118px; background:#fff; }
+.cal-cell:nth-child(8n) { border-right:0; }
+.cal-head { background:#f7fafc; color:var(--muted); font-size:11px; font-weight:800; text-align:center; padding:8px 4px; min-height:auto; }
+.cal-head b { display:block; color:var(--ink); font-size:12px; }
+.cal-account { background:#fbfdff; position:sticky; left:0; z-index:2; font-size:11.5px; }
+.cal-account b { display:block; color:var(--ink); font-size:12px; }
+.cal-account .tiny { display:block; margin-top:2px; }
+.draft-card { display:block; width:100%; text-align:left; border:1px solid var(--line-soft); background:#fbfdff; border-radius:8px; padding:7px; margin-bottom:6px; cursor:pointer; font:inherit; color:var(--ink); transition:.12s; }
+.draft-card:hover { border-color:#b9cad8; transform:translateY(-1px); }
+.draft-card.selected { border-color:var(--accent); box-shadow:0 0 0 2px rgba(8,127,140,.12); }
+.draft-card b { display:block; font-size:11.5px; line-height:1.35; margin:3px 0 4px; }
+.draft-card .tiny { display:block; color:var(--faint); font-size:10.5px; }
+.draft-card.published { background:#f2fbf6; }
+.draft-card.failed { background:#fff5f3; border-color:#f3c2bb; }
+.draft-card.approved { background:#f2f7ff; }
+.draft-card.rejected { background:#f7f7f7; opacity:.85; }
+.review-body { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:10px 18px; align-items:start; }
+.review-head, .review-failure, .review-note { grid-column:1 / -1; }
+.review-copy, .review-actions, .review-boundary { grid-column:1; }
+.review-meta, .review-checks { grid-column:2; }
+.copy-box { border:1px solid var(--line); border-radius:10px; background:#fbfdff; padding:12px; font-size:12.8px; color:#34495a; }
+.copy-box .hook { font-weight:800; color:var(--ink); }
+.copy-box .hashtags { color:var(--accent-dark); font-family:Consolas,monospace; font-size:11.5px; }
+.meta-list { display:grid; gap:6px; font-size:12px; }
+.meta-list div { display:flex; justify-content:space-between; gap:10px; border-bottom:1px solid var(--line-soft); padding-bottom:4px; }
+.meta-list span { color:var(--muted); }
+.action-grid { display:grid; gap:7px; }
+.failure-item { border:1px solid #f3c2bb; background:#fff8f7; border-radius:9px; padding:10px; font-size:12px; }
+.failure-item .err { font-family:Consolas,monospace; font-size:11px; color:var(--bad); margin:5px 0; }
+.metric-table td, .metric-table th { white-space:normal; }
+.cost-table td:last-child { text-align:right; white-space:nowrap; }
+.flow-legend { display:flex; gap:6px; flex-wrap:wrap; }
+.flow-legend .badge { font-size:10.5px; }
+.auth-box { border:1px dashed #b9d6dd; background:#f5fbfb; border-radius:9px; padding:11px; font-size:12.5px; color:#3f6369; }
+@media (max-width:1000px){ .social-layout{grid-template-columns:1fr;} }
+@media (max-width:760px){ .pipeline{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brandmark" href="../"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ 社媒矩阵</span></a>
+    <nav class="navlinks" aria-label="演示导航">
+      <a href="../geo/">GEO 监测</a><a href="../voice/">Voice AI</a><a href="../shopping/">购物助手</a>
+      <a href="../customs/">报关自动化</a><a href="../sheet/">表格清洗</a><a class="active" href="./">社媒获客</a>
+      <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/docs/social" target="_blank" rel="noopener">源码 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Overseas social matrix · human-in-the-loop</div>
+    <h1>不是群发。<br>是把内容、账号、审批和失败恢复串成流水线。</h1>
+    <p class="lede">一个 Facebook 多账号内容矩阵的可点通工作台：7 天选题日历 → 合规扫描 → 人工批准 → 模拟发布 → 429 限流重试 → 数据反馈。演示不连接真实账号、不自动发帖，所有内容与指标均为合成数据。</p>
+    <div class="row mt16"><span class="badge warn">模拟发布 · 0 真实账号</span><span class="badge info">人工批准门</span><span class="badge good">失败可恢复</span></div>
+    <div class="kpis mt24">
+      <div class="kpi"><div class="k">账号矩阵</div><div class="v">3</div><div class="d">Facebook · 美/德/英市场</div></div>
+      <div class="kpi"><div class="k">本周草稿</div><div class="v" id="kpi-drafts">21</div><div class="d">7 天 × 3 账号</div></div>
+      <div class="kpi"><div class="k">人工批准</div><div class="v">100%</div><div class="d">发布前必须有人点批准</div></div>
+      <div class="kpi"><div class="k">真实发布</div><div class="v">0</div><div class="d">本页只做模拟发布</div></div>
+    </div>
+  </section>
+
+  <section class="card" style="padding:14px 18px">
+    <div class="row between mb12"><div><h3 style="font-size:15px">运营流水线</h3><p class="tiny">每个环节都有输入、输出和失败处理，不是“一键群发”。</p></div><span class="badge info" id="pipeline-state">人工在环</span></div>
+    <div class="pipeline">
+      <div class="pipe active"><b>01 选题</b>账号 × 受众 × 7 天</div>
+      <div class="pipe active"><b>02 生成</b>文案 / 图文 / 脚本</div>
+      <div class="pipe active"><b>03 合规</b>医疗/绝对化/素材授权</div>
+      <div class="pipe active"><b>04 人工批准</b>逐条确认，不能绕过</div>
+      <div class="pipe active"><b>05 模拟发布</b>幂等键 + 失败重试</div>
+      <div class="pipe active"><b>06 反馈</b>曝光/点击/线索</div>
+    </div>
+  </section>
+
+  <section class="card mt16">
+    <div class="panel-title">
+      <div><h3>7 天内容日历</h3><p>2026-11-02 至 11-08 · 3 个账号 · 共 21 条草稿。点击卡片查看与审批。</p></div>
+      <div class="row"><span class="badge" id="cal-count">—</span><span class="badge bad" id="cal-failed">失败 1</span></div>
+    </div>
+    <div class="row between mb12"><span class="tiny" id="cal-sub">所有指标为合成数据；发布时间为演示排期。</span><span class="flow-legend"><span class="badge">待审核</span><span class="badge info">已批准</span><span class="badge good">已模拟发布</span><span class="badge bad">失败</span></span></div>
+    <div class="calendar-wrap"><div class="calendar" id="calendar"></div></div>
+    <div class="auth-box mt12"><b>账号授权边界：</b>生产环境需由页面管理员完成 Meta OAuth（pages_manage_posts 等权限）并通过 App Review；系统不保存密码，不在本演示读取任何真实令牌。每个账号发布前都保留人工批准记录。</div>
+  </section>
+
+  <section class="social-layout mt16">
+    <section class="card">
+      <div class="panel-title"><div><h3>内容审阅台</h3><p>选中一条草稿；批准后才能模拟发布。</p></div><span class="badge" id="review-status">—</span></div>
+      <div id="review" class="review-body"></div>
+    </section>
+
+    <section class="card">
+      <div class="panel-title"><div><h3>失败恢复队列</h3><p>429/网络失败不丢稿；重试复用幂等键。</p></div><span class="badge bad" id="failure-count">—</span></div>
+      <div id="failure-list" class="stack"></div>
+      <p class="tiny mt12">规则：自动重试 3 次（指数退避），仍失败则进入人工队列；人工重试沿用同一 <span class="mono">idempotency_key</span>，避免重复发帖。</p>
+    </section>
+  </section>
+
+  <section class="card mt16">
+    <div class="panel-title"><div><h3>内容数据反馈</h3><p>只统计已模拟发布的条目；平台侧归因，不代表成交。</p></div><button class="btn small" id="export-feedback">导出 CSV</button></div>
+    <div class="table-wrap"><table class="metric-table"><thead><tr><th>账号</th><th>已发布</th><th>曝光</th><th>点击</th><th>内容线索</th><th>点击率</th></tr></thead><tbody id="feedback-body"></tbody></table></div>
+    <div class="row between mt8"><span class="tiny" id="feedback-note">—</span><span class="badge info" id="feedback-badge">—</span></div>
+    <div class="note mt12">反馈只用于下一轮选题：哪类内容带来点击、哪类带来无效线索。演示不承诺询盘/成交；线索字段是合成平台事件，生产需接 Meta Insights / 自建 UTM + CRM 回传。</div>
+  </section>
+
+  <section class="grid two mt16">
+      <section class="card">
+        <div class="panel-title"><div><h3>账号与授权矩阵</h3><p>先小范围跑通，再扩 IG/TikTok。</p></div><span class="badge warn">演示未连真实账号</span></div>
+        <div class="table-wrap"><table><thead><tr><th>账号</th><th>市场 / 语言</th><th>授权</th><th>本周节奏</th></tr></thead><tbody id="account-body"></tbody></table></div>
+        <div class="note mt12">账号安全：双人复核、最小权限、令牌加密存放、发布日志；人员离职先撤 OAuth 授权。演示不包含任何密码或真实页面 ID。</div>
+      </section>
+
+      <section class="card">
+        <div class="panel-title"><div><h3>开发 / 运营成本口径</h3><p>分开列，避免“开发价”掩盖持续运营。</p></div><span class="badge info">不含广告费</span></div>
+        <div class="table-wrap"><table class="cost-table"><tbody>
+          <tr><th colspan="2">一次性开发（演示级最小闭环）</th></tr>
+          <tr><td>3 账号接入、7 天日历、审批门、失败重试、反馈看板</td><td>$300</td></tr>
+          <tr><th colspan="2">月度运营（90 条草稿 / 月）</th></tr>
+          <tr><td>内容生成 + 人工编辑（90 × $2.5）</td><td>$225</td></tr>
+          <tr><td>人工审核（10 h × $20）</td><td>$200</td></tr>
+          <tr><td>调度、存储、代理与工具</td><td>$25</td></tr>
+          <tr><th>月度合计（不含广告）</th><th>$450</th></tr>
+        </tbody></table></div>
+        <div class="note mt12">广告投放、素材拍摄和 KOL 另计；不承诺线索量或成交。真实接入 Meta API 的 App Review、企业验证和账号申诉成本按实际情况评估。</div>
+      </section>
+  </section>
+
+  <section class="card" id="qa">
+    <div class="panel-title"><div><h3>运行自检</h3><p>10 项断言：日历完整性、合规扫描、人工门、失败重试幂等、反馈统计与成本口径。</p></div><button class="btn small" id="run-checks">重新运行</button><span class="badge good" data-check-summary>—</span></div>
+    <div class="checklist" id="checklist"></div>
+    <div class="note mt12">本页为纯静态合成演示：没有连接 Facebook，没有自动发帖，也没有真实客户数据。生产上线需完成平台授权、隐私/素材审核、发布频率限制和人工值班。</div>
+  </section>
+</main>
+
+<footer class="footer wrap"><div class="row between"><span>Social matrix demo · simulated publishing only · static build</span><a href="../">← 返回演示索引</a></div></footer>
+<script src="../assets/common.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
