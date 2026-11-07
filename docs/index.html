@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ClawHunt FDE Demo Studio · 六个可运行交付样例</title>
-<meta name="description" content="六个可点通的交付样例：GEO 可见度监测、招聘 Voice AI、AI 购物助手、报关自动化、表格清洗、海外社媒矩阵，另附产业 AI 示例。纯静态、零后端、无密钥，托管在 GitHub Pages。">
+<title>ClawHunt FDE Demo Studio · 七个可运行交付样例</title>
+<meta name="description" content="七个可点通的交付样例：骑手招聘 Agent 平台（五个交付物）、GEO 可见度监测、招聘 Voice AI、AI 购物助手、报关自动化、表格清洗、海外社媒矩阵，另附产业 AI 示例。纯静态、零后端、无密钥，托管在 GitHub Pages。">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="./assets/demo.css">
 <style>
@@ -17,6 +17,7 @@
   <div class="wrap topbar-inner">
     <a class="brandmark" href="./"><span class="branddot"></span> ClawHunt <span class="muted" style="font-weight:500">/ demo studio</span></a>
     <nav class="navlinks" aria-label="主导航">
+      <a href="./rider/">骑手招聘</a>
       <a href="./geo/">GEO 监测</a>
       <a href="./voice/">Voice AI</a>
       <a href="./shopping/">购物助手</a>
@@ -33,14 +34,14 @@
   <section class="hero wrap">
     <div class="eyebrow">Always-on static demos · synthetic data only</div>
     <h1>把方案变成<br>甲方现在就能点开的演示。</h1>
-    <p class="lede">六个独立的交付样例，对应六类真实项目需求，另附一个产业 AI 串联示例。全部是纯前端静态页面：不依赖本机、不需要后端、不保存密钥，托管在 GitHub Pages，电脑关机后链接照常打开。</p>
+    <p class="lede">七个独立的交付样例，对应七类真实项目需求，另附一个产业 AI 串联示例。全部是纯前端静态页面：不依赖本机、不需要后端、不保存密钥，托管在 GitHub Pages，电脑关机后链接照常打开。</p>
     <div class="hero-actions">
-      <a class="btn primary" href="#demos">打开六个演示 ↓</a>
+      <a class="btn primary" href="#demos">打开七个演示 ↓</a>
       <a class="btn" href="#always-on">为什么关机也能跑</a>
       <a class="btn ghost" href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">查看源码 ↗</a>
     </div>
     <div class="grid four mt24">
-      <div class="kpi"><div class="k">交付样例</div><div class="v">6</div><div class="d">各自独立入口、可复跑自检</div></div>
+      <div class="kpi"><div class="k">交付样例</div><div class="v">7</div><div class="d">各自独立入口、可复跑自检</div></div>
       <div class="kpi"><div class="k">后端依赖</div><div class="v">0</div><div class="d">浏览器内完成全部交互</div></div>
       <div class="kpi"><div class="k">API 密钥</div><div class="v">0</div><div class="d">无真实账号、无真实客户数据</div></div>
       <div class="kpi"><div class="k">托管方式</div><div class="v">静态</div><div class="d">GitHub Pages · 7×24 可访问</div></div>
@@ -50,9 +51,29 @@
 
   <section id="demos" class="wrap" style="padding: 10px 0 30px">
     <div class="panel-title">
-      <div><div class="eyebrow">Six demos + one extra</div><h2>六个可点通的样例</h2><p>每个入口都有独立的交互、证据留存和自检，不是一张截图。</p></div>
+      <div><div class="eyebrow">Seven demos + one extra</div><h2>七个可点通的样例</h2><p>每个入口都有独立的交互、证据留存和自检，不是一张截图。</p></div>
     </div>
     <div class="grid two">
+      <article class="card">
+        <div class="row between"><span class="badge info">骑手招聘 / 1804–1808</span><span class="badge good">5 个交付物</span></div>
+        <h3 class="mt12">骑手招聘 Agent 化信息收集平台</h3>
+        <p class="sub">一套共用接口契约，五个可独立验收的交付物：Agent 对话引擎、求职者 H5、招聘工作台、管理驾驶舱、数据安全与合规。所有验收点都做成了页面内可点通的证据，而不是一份方案 PPT。</p>
+        <ul class="clean fs13 mt12">
+          <li>7 槽位状态机 + 政策引用 + 注入防护；手机号/身份证永不进模型请求</li>
+          <li>H5 全漏斗：渠道 → 同意 → 7 项 → 政策 → 选站 → 预约 → 结果，含未成年退出</li>
+          <li>工作台状态机/去重导入/50 并发 5 名额不超卖/Outbox HMAC；驾驶舱 7 KPI 与 SQL 逐项对账</li>
+          <li>安全：字段级加密、Vault token、哈希链审计定位、五角色跨城拒绝、留存清理</li>
+        </ul>
+        <div class="row mt16"><a class="btn primary small" href="./rider/?m=overview">打开骑手招聘演示 →</a><span class="tiny">5 个模块 · 一套契约</span></div>
+        <div class="row mt12 fs13" style="flex-wrap:wrap;gap:10px 16px">
+          <a href="./rider/?m=agent">01 Agent 引擎</a>
+          <a href="./rider/?m=h5">02 求职者 H5</a>
+          <a href="./rider/?m=workbench">03 招聘工作台</a>
+          <a href="./rider/?m=dashboard">04 管理驾驶舱</a>
+          <a href="./rider/?m=security">05 安全合规</a>
+        </div>
+      </article>
+
       <article class="card">
         <div class="row between"><span class="badge info">GEO / 1365</span><span class="badge good">可交互</span></div>
         <h3 class="mt12">GEO 智能可见度监测</h3>
@@ -160,7 +181,7 @@
   <section class="wrap" style="padding: 10px 0 30px">
     <div class="grid three">
       <div class="card tight"><h3>验收看什么</h3><p class="sub">先打开任一 demo，点“运行自检”。自检项是断言，不是文案：抽取字段、证据完整性、规则判定、结算总和、API 契约都会被逐项检查。</p></div>
-      <div class="card tight"><h3>源码在哪</h3><p class="sub">完整源码树在 <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">Gupeat/clawhunt-agent-demos</a>；本页与六个 demo 都放在 <span class="mono">docs/</span>，可一键 fork 或私有化部署。</p></div>
+      <div class="card tight"><h3>源码在哪</h3><p class="sub">完整源码树在 <a href="https://github.com/Gupeat/clawhunt-agent-demos" target="_blank" rel="noopener">Gupeat/clawhunt-agent-demos</a>；本页与七个 demo 都放在 <span class="mono">docs/</span>，可一键 fork 或私有化部署。</p></div>
       <div class="card tight"><h3>已有 Python 交付样例</h3><p class="sub">另有两个可离线复跑的 Python 样例：<a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/customs-agent" target="_blank" rel="noopener">报关表回填</a>（10 项测试）与 <a href="https://github.com/Gupeat/clawhunt-agent-demos/tree/main/social-workflow" target="_blank" rel="noopener">社媒获客工作流</a>（6 项测试）。</p></div>
     </div>
   </section>

@@ -1,6 +1,6 @@
 # Agent demos
 
-Six browser-only demos in [`docs/`](docs/) plus two offline Python references.
+Seven browser-only demos in [`docs/`](docs/) plus two offline Python references.
 The static pages are the proposal evidence for the current ClawHunt briefs; the
 Python references show the same control flow as runnable, test-backed code.
 
@@ -8,6 +8,7 @@ Python references show the same control flow as runnable, test-backed code.
 
 | Demo | Brief | What it proves |
 |---|---|---|
+| [Rider recruitment OS](docs/rider/) | #1804–#1808 | five deliverables on one contract: agent slots/citations/de-id, H5 funnel, workbench state machine/concurrency, 7 KPIs/config review, vault/audit/RBAC |
 | [GEO visibility](`docs/geo/`) | #1365 | 6-platform monitoring, citation evidence, variance and extraction checks |
 | [Recruiting Voice AI](`docs/voice/`) | #1639 | state machine, silence/barge-in, API failure fallback, scorecard and 12 QA rows |
 | [Shopping assistant](`docs/shopping/`) | #1339 | grounded C-end answers, compliance scanning, structured B-end response |
@@ -84,7 +85,7 @@ The run ends with 3 published posts, 1 permanent failure, 1 pending review and 1
 ## Repository layout
 
 ```text
-docs/                       # six static browser demos + hub
+docs/                       # seven static browser demos + hub
 social-workflow/            # Python reference: social workflow
 customs-agent/              # Python reference: customs automation
 .gitignore

@@ -15,3 +15,5 @@ customs-agent/out/
 Thumbs.db
 .idea/
 .vscode/
+# Local browser-test screenshots and CDP scripts
+.shots/

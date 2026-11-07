@@ -1,6 +1,6 @@
 # ClawHunt demo pages
 
-Six static, browser-only demos used as proposal evidence for ClawHunt tasks,
+Seven static, browser-only demos used as proposal evidence for ClawHunt tasks,
 plus one extra regional-industry example. No API keys, no backend, no customer
 data. Hosted with GitHub Pages so the pages keep running when the author's
 computer is off.
@@ -9,6 +9,7 @@ computer is off.
 
 | Demo | Path | ClawHunt task | What is verified |
 |---|---|---|---|
+| Rider recruitment OS (5 modules) | [rider/](rider/) | #1804–#1808 | agent 7 slots + citations + de-id; H5 funnel; workbench state machine/concurrency/outbox; 7 KPIs + config review; vault/audit/RBAC/retention |
 | GEO visibility monitor | [geo/](geo/) | #1365 | 6 platforms, 8 checks, evidence + variance |
 | Recruiting Voice AI | [voice/](voice/) | #1639 | 3 scenarios, 12 QA rows, failure/fallback paths |
 | AI shopping assistant | [shopping/](shopping/) | #1339 | 5 synthetic products, 7 checks, C/B API contract |
@@ -39,7 +40,7 @@ python -m http.server 8799
 ## Verification
 
 Browser checks were run through the Edge DevTools Protocol against the local
-server. All seven pages load with no runtime/console errors and no horizontal
+server. All eight pages load with no runtime/console errors and no horizontal
 overflow at 1280 px:
 
 - GEO: 8/8 assertions
@@ -49,3 +50,4 @@ overflow at 1280 px:
 - Sheet: 10/10 checks; 12 raw, 8 clean, 4 exceptions
 - Social: 10/10 checks; 21 cards, approve/publish and 429 retry work
 - Industry: 8/8 assertions
+- Rider: all six views load; Agent 22/22 checks; H5 funnel + E2E 14/14; Workbench 50-concurrency/5 slots; Dashboard 7/7 KPIs; Security 21-step flow
